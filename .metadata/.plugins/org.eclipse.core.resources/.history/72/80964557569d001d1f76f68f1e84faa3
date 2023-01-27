@@ -1,0 +1,77 @@
+package index;
+
+import java.util.List;
+import java.util.Scanner;
+
+import Database.DAO.BoardDAO;
+import Database.Entity.BoardEntity;
+import dto.DeleteBoardDTO;
+import dto.UpdateBoardBTO;
+import dto.insertBoardDTO;
+import src.BoardService;
+
+public class MainApplication {
+	
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		String path = scanner.nextLine();
+		BoardService boardService = new BoardService();
+		
+		if(path.equals("POST /board")) {
+			
+			System.out.print("boardTitle : ");
+			String boardTitle = scanner.nextLine();
+			System.out.print("boardContent : ");
+			String boardContent = scanner.nextLine();
+			System.out.print("boardWriter : ");
+			Integer boardWriter = scanner.nextInt();
+			
+			insertBoardDTO insertBoardDTO = new insertBoardDTO(boardTitle, boardContent, boardWriter, boardWriter);
+			
+			int result = boardService.postBoard(insertBoardDTO);
+		}else if(path.equals("GET /boardList")) {
+			List<BoardEntity> boardList = boardService.getBoardList();
+			for(BoardEntity board : boardList)
+				System.out.println(board.toString());
+		}else if(path.equals("PATCH /board")) {
+			
+			System.out.print("boardtitle: ");
+			String boardtitle = scanner.nextLine();
+			System.out.print("boardContent : ");
+			String boardContent = scanner.nextLine();
+			System.out.print("id : ");
+			Integer id = scanner.nextInt();
+			
+			UpdateBoardBTO updateBoardBTO = new UpdateBoardBTO(id, boardtitle, boardContent);
+			
+			int result = boardService.patchBoard(updateBoardBTO);
+			
+			if(result == 1) System.out.println("update Success");
+			
+			else System.out.println("update failed");
+			
+		}else if(path.equals("DELETE /board")) {
+			
+			System.out.println("id : ");
+			Integer id = scanner.nextInt();
+			
+			DeleteBoardDTO deleteBoardDTO = new DeleteBoardDTO(id);
+			
+			int result = boardService.deleteBoard(deleteBoardDTO);
+			if(result == 1) System.out.println("Delete Success");
+			else System.out.println("Delete Failed");
+		}else {
+			System.out.println("404 not found");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

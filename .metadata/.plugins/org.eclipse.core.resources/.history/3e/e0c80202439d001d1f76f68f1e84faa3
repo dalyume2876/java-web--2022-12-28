@@ -1,0 +1,46 @@
+package index;
+
+import java.util.List;
+import java.util.Scanner;
+
+import Database.DAO.BoardDAO;
+import Database.Entity.BoardEntity;
+import dto.insertBoardDTO;
+
+public class MainApplication {
+	
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		String path = scanner.nextLine();
+		BoardDAO boardDAO = new BoardDAO();
+		
+		if(path.equals("POST /board")) {
+			System.out.print("boardTitle : ");
+			String boardTitle = scanner.nextLine();
+			System.out.print("boardContent : ");
+			String boardContent = scanner.nextLine();
+			System.out.print("boardWriter : ");
+			Integer boardWriter = scanner.nextInt();
+			
+			insertBoardDTO insertBoardDTO = new insertBoardDTO(boardTitle, boardContent, boardWriter, boardWriter);
+			
+			boardDAO.insert(insertBoardDTO);
+		}else if(path.equals("GET /boardList")) {
+			List<BoardEntity> boardList = boardDAO.find();
+			for(BoardEntity board : boardList)
+				System.out.println(board.toString());
+		}else {
+			System.out.println("404 not found");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
