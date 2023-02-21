@@ -16,7 +16,7 @@ export const TOP3: IPreviewItem[] = [
 {
         img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
         writerProfile: '',
-        writeNickname: '작성자2',
+        writeNickname: 'Dalyume',
         writeDate: '2023. 02. 17',
         boardTitle: '게시물 제목2 내용입니다.',
         boardContent: '',
@@ -56,7 +56,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
@@ -92,7 +92,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
@@ -128,7 +128,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
@@ -164,7 +164,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목1 내용입니다.',
                 boardContent: '',
@@ -200,7 +200,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
@@ -236,7 +236,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
@@ -272,7 +272,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목1 내용입니다.',
                 boardContent: '',
@@ -308,7 +308,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목1 내용입니다.',
                 boardContent: '',
@@ -344,7 +344,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목2 내용입니다.',
                 boardContent: '',
@@ -380,7 +380,7 @@ export const BOARD_LIST: IPreviewItem[] = [
         {
                 img: 'http://m.moongmi.com/web/product/big/202201/9ab78a706ca6c0b72689c6224a9508af.jpg',
                 writerProfile: '',
-                writeNickname: '작성자2',
+                writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
                 boardTitle: '게시물 제목3 내용입니다.',
                 boardContent: '',
