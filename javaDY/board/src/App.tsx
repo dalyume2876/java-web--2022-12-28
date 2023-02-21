@@ -34,7 +34,7 @@ function App() {
           <Route path='write' element={(<BoardWriteView/>)} />
           <Route path='search/:content' element={(<SearchView/>)} />
           <Route path='detail/:boardNumber' element={(<></>)} />
-          <Route path='update/:boardNumber' element={(<></>)} />
+          <Route path='update/:boardNumber' element={(<BoardWriteView/>)} />
         </Route>
       </Routes>
       { path.pathname !== '/auth' && (<Footer />) }
