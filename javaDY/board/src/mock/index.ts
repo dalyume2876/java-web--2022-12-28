@@ -58,12 +58,12 @@ export const BOARD_LIST: IPreviewItem[] = [
                 writerProfile: '',
                 writeNickname: 'Dalyume',
                 writeDate: '2023. 02. 17',
-                boardTitle: '게시물 제목3 내용입니다.',
-                boardContent: '',
+                boardTitle: '게시물 제목2 ### 내용입니다.',
+                boardContent: '내용입니다.',
                 likeCount: 52,
                 commentCount: 32,
                 viewCount: 132,
-                boardNumber: 1
+                boardNumber: 2
         },
         {
                 img: 'https://i.pinimg.com/originals/e3/d6/c6/e3d6c67e0e843a9cebe5538783333269.jpg',
