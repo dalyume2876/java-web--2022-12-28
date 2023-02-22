@@ -1,4 +1,4 @@
-import { IPreviewItem, IUser } from "src/interfaces";
+import { ILikeUser, IPreviewItem, IUser } from "src/interfaces";
 
 export const TOP3: IPreviewItem[] = [
 {
@@ -424,3 +424,90 @@ export const USER: IUser = {
         address: '부산광역시 부산진구',
         addressDetail: '삼정타워',
 }
+
+export const LIKE_LIST: ILikeUser[] = [
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        },
+        {
+                likeUserProfile: 'https://w.namu.la/s/216d0bdf317e1d49c85f5fa99a59a8d30a27dc78745de98b4cc0cb082a8f7023b9cf594ca46645ff9495ac4ef0a7acec60910158ecaf58a7d1569ba3c6c32f64779bc6c4c8a328440e7acdc77cb903b28b1a145bbeeba7f573304f7b6d322219',
+                likeUserNickname: '호두'
+        }
+]
