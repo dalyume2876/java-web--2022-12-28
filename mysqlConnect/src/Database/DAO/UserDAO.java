@@ -1,39 +1,37 @@
-package Database.DAO;
+package database.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import Database.Entity.UserEntity;
-import index.DatabaseConnector;
+import database.DatabaseConnector;
+import database.Entity.UserEntity;
 
 public class UserDAO {
 	
-	//µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ User Å×ÀÌºí Áß id°¡ ÀÔ·Â¹ŞÀº °ª¿¡ ÇØ´çÇÏ´Â ·¹ÄÚµå¸¦ ¸ğµç ÄÃ·³À» ¼±ÅÃÇØ ¹İÈ¯
-	//SQL : SELECT * FROM User WHERE id = ?;
-	//¿¹»ó ¹İÈ¯ °ª : 0 ¶Ç´Â 1°³ÀÇ ·¹ÄÚµå
+	// ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ User í…Œì´ë¸” ì¤‘ idê°€ ì…ë ¥ë°›ì€ ê°’ì— í•´ë‹¹í•˜ëŠ” ë ˆì½”ë“œë¥¼ ëª¨ë“  ì»¬ëŸ¼ì„ ì„ íƒí•´ì„œ ë°˜í™˜
+	// SQL: SELECT * FROM User WHERE id = ?;
+	// ì˜ˆìƒë˜ëŠ” ë°˜í™˜ ê°’: 0 or 1ê°œì˜ ë ˆì½”ë“œ
 	
-	//find ~~ : °á°úÀÇ ÀÎ½ºÅÏ½º¸¦ ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
-	//exists ~~ : °á°úÀÇ Á¸Àç¿©ºÎ¸¦ boolean ÇüÅÂ·Î ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
+	// find~~ : ê²°ê³¼ì˜ ì¸ìŠ¤í„´ìŠ¤ë¥¼ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
+	// exists~~ : ê²°ê³¼ì˜ ì¡´ì¬ì—¬ë¶€ë¥¼ booleaní˜•íƒœë¡œ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
 	public UserEntity findById(Integer id) {
 		UserEntity result = null;
 		
-		final String SQL = "SELECT * FROM User WHERE id = ?;";
+		final String SQL = "SELECT * FROM User WHERE id = ?";
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		
 		try {
-			
 			connection = DatabaseConnector.createConnection();
 			preparedStatement = connection.prepareStatement(SQL);
 			preparedStatement.setInt(1, id);
 			
 			resultSet = preparedStatement.executeQuery();
 			
-			if(resultSet.next()) {
-				
+			if (resultSet.next()) {
 				String password = resultSet.getString(2);
 				String name = resultSet.getString(3);
 				String telNumber = resultSet.getString(4);
@@ -41,25 +39,22 @@ public class UserDAO {
 				result = new UserEntity(id, password, name, telNumber);
 			}
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		} finally {
 			try {
-				if(resultSet != null && !resultSet.isClosed()) {
+				if (resultSet != null && !resultSet.isClosed())
 					resultSet.close();
-				}
-				if(preparedStatement != null && !preparedStatement.isClosed()) {
-					resultSet.close();
-				}
-				if(connection != null && !connection.isClosed()) {
+				if (preparedStatement != null && !preparedStatement.isClosed())
+					preparedStatement.close();
+				if (connection != null && !connection.isClosed())
 					connection.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 		
 		return result;
 	}
-	
+
 }

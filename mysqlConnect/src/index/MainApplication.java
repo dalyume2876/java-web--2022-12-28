@@ -3,109 +3,123 @@ package index;
 import java.util.List;
 import java.util.Scanner;
 
-import Database.DAO.BoardDAO;
-import Database.Entity.BoardEntity;
+import database.Entity.BoardEntity;
 import dto.DeleteBoardDTO;
-import dto.UpdateBoardBTO;
-import dto.insertBoardDTO;
-import src.BoardService;
+import dto.InsertBoardDTO;
+import dto.UpdateBoardDTO;
+import service.BoardService;
 
 public class MainApplication {
-	
+
 	public static void main(String[] args) {
-		
 		Scanner scanner = new Scanner(System.in);
 		String path = scanner.nextLine();
+		
 		BoardService boardService = new BoardService();
 		
-		if(path.equals("POST /board")) {
-			/////////////////////////////////////////////////////////////
-			//»ç¿ëÀÚ·ÎºÎÅÍ ÀÔ·ÂÀ» ¹ŞÀ½.
-			System.out.print("boardTitle : ");
+		if (path.equals("POST /board")) {
+			///////////////////////////////////////////////////////
+			// ì‚¬ìš©ìë¡œë¶€í„° ì…ë ¥ì„ ë°›ìŒ
+			System.out.println("boardTitle : ");
 			String boardTitle = scanner.nextLine();
-			System.out.print("boardContent : ");
+			System.out.println("boardContent : ");
 			String boardContent = scanner.nextLine();
-			System.out.print("boardWriter : ");
+			System.out.println("boardWriter : ");
 			Integer boardWriter = scanner.nextInt();
-			/////////////////////////////////////////////////////////////
 			
-			/////////////////////////////////////////////////////////////
-			//ÀÔ·Â °ËÁõ
-			if(boardTitle.isBlank() || boardContent.isBlank() || boardWriter < 0) {
-				System.out.println("Insert Success");
-			}
-			/////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////
+			// ì…ë ¥ì„ ê²€ì¦
+			if (boardTitle.isBlank() || boardContent.isBlank() || boardWriter < 0)
+				System.out.println("Invalid Input");
 			
-			/////////////////////////////////////////////////////////////
-			//Service Layer Àü¼ÛÇÒ DTO »ı¼º
-			insertBoardDTO insertBoardDTO = new insertBoardDTO(boardTitle, boardContent, boardWriter, boardWriter);
-			/////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////
+			// Service Layer ì „ì†¡í•  DTO ìƒì„±
+			InsertBoardDTO insertBoardDto = 
+					new InsertBoardDTO(boardTitle, boardContent, boardWriter);
 			
-			/////////////////////////////////////////////////////////////
-			//½ÇÁ¦ ºñÁî´Ï½º ·ÎÁ÷À» ½ÇÇàÇÏ±â À§ÇØ ServiceÀÇ ¸Ş¼­µå¸¦ È£Ãâ
-			int result = boardService.postBoard(insertBoardDTO);
-			/////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////
+			// ì‹¤ì œ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì„ ì‹¤í–‰í•˜ê¸° ìœ„í•´ Serviceì˜ ë©”ì„œë“œë¥¼ í˜¸ì¶œ
+			int result = boardService.postBoard(insertBoardDto);
 			
-			/////////////////////////////////////////////////////////////
-			//ºñÁî´Ï½º ·ÎÁ÷ °á°ú¿¡ µû¶ó °á°úÃâ·Â
-			if(result == 1) System.out.println("Insert Success");
-			else System.out.println("Insert failed");
-			/////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////
+			// ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì˜ ê²°ê³¼ì— ë”°ë¼ ê²°ê³¼ë¥¼ ì¶œë ¥
+			if (result == 1) System.out.println("Insert Success");
+			else System.out.println("Insert Failed");
+		}
+		else if (path.equals("GET /boardList")) {
 			
-		}else if(path.equals("GET /boardList")) {
-			
-			/////////////////////////////////////////////////////////////
-			//½ÇÁ¦ ºñÁî´Ï½º ·ÎÁ÷À» ½ÇÇàÇÏ±â À§ÇØ ServiceÀÇ ¸Ş¼­µå È£Ãâ
+			///////////////////////////////////////////////////////
+			// ì‹¤ì œ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì„ ì‹¤í–‰í•˜ê¸° ìœ„í•´ Serviceì˜ ë©”ì„œë“œ í˜¸ì¶œ
 			List<BoardEntity> boardList = boardService.getBoardList();
-			/////////////////////////////////////////////////////////////
 			
-			/////////////////////////////////////////////////////////////
-			//ºñÁî´Ï½º ·ÎÁ÷ °á°ú¸¦ Ãâ·ÂÇÔ.
-			for(BoardEntity board : boardList)
+			///////////////////////////////////////////////////////
+			// ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ ê²°ê³¼ë¥¼ ì¶œë ¥
+			for (BoardEntity board: boardList)
 				System.out.println(board.toString());
 			
-		}else if(path.equals("PATCH /board")) {
-			/////////////////////////////////////////////////////////////
-			//»ç¿ëÀÚ·ÎºÎÅÍ ÀÔ·ÂÀ» ¹ŞÀ½.
-			System.out.print("boardtitle: ");
+		}
+		else if (path.equals("PATCH /board")) {
+			
+			///////////////////////////////////////////////////////
+			// ì‚¬ìš©ìë¡œë¶€í„° ì…ë ¥ì„ ë°›ìŒ
+			System.out.println("boardTitle : ");
 			String boardTitle = scanner.nextLine();
-			System.out.print("boardContent : ");
+			System.out.println("boardContent : ");
 			String boardContent = scanner.nextLine();
-			System.out.print("id : ");
-			Integer id = scanner.nextInt();
-			
-			if(boardTitle.isBlank() || boardContent.isBlank() || id < 0) {
-				System.out.println("Insert Success");
-			}
-			
-			UpdateBoardBTO updateBoardBTO = new UpdateBoardBTO(id, boardTitle, boardContent);
-			
-			int result = boardService.patchBoard(updateBoardBTO);
-			
-			if(result == 1) System.out.println("update Success");
-			else System.out.println("update failed");
-			
-		}else if(path.equals("DELETE /board")) {
-			
 			System.out.println("id : ");
 			Integer id = scanner.nextInt();
 			
-			if(id < 0) System.out.println("Invalid Input");
+			///////////////////////////////////////////////////////
+			// ì…ë ¥ì„ ê²€ì¦
+			if (boardTitle.isBlank() || boardContent.isBlank() || id < 0)
+				System.out.println("Invalid Input");
 			
-			DeleteBoardDTO deleteBoardDTO = new DeleteBoardDTO(id);
+			///////////////////////////////////////////////////////
+			// Service Layer ì „ì†¡í•  DTO ìƒì„±
+			UpdateBoardDTO updateBoardDto = 
+					new UpdateBoardDTO(id, boardTitle, boardContent);
 			
-			int result = boardService.deleteBoard(deleteBoardDTO);
-			if(result == 1) System.out.println("Delete Success");
-			else System.out.println("Delete Failed");
-		}else {
-			System.out.println("404 not found");
+			///////////////////////////////////////////////////////
+			// ì‹¤ì œ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì„ ì‹¤í–‰í•˜ê¸° ìœ„í•´ Serviceì˜ ë©”ì„œë“œë¥¼ í˜¸ì¶œ
+			int result = boardService.patchBoard(updateBoardDto);
+			
+			///////////////////////////////////////////////////////
+			// ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì˜ ê²°ê³¼ì— ë”°ë¼ ê²°ê³¼ë¥¼ ì¶œë ¥
+			if (result == 1) System.out.println("Update Success");
+			else if (result == -1) System.out.println("Does Not Exist Board Id");
+			else System.out.println("Update Failed");
 		}
+		else if (path.equals("DELETE /board")) {
+			
+			///////////////////////////////////////////////////////
+			// ì‚¬ìš©ìë¡œë¶€í„° ì…ë ¥ì„ ë°›ìŒ
+			System.out.println("id : ");
+			Integer id = scanner.nextInt();
+			
+			///////////////////////////////////////////////////////
+			// ì…ë ¥ì„ ê²€ì¦
+			if (id < 0) System.out.println("Invalid Input");
+			
+			///////////////////////////////////////////////////////
+			// Service Layer ì „ì†¡í•  DTO ìƒì„±
+			DeleteBoardDTO deleteBoardDto = new DeleteBoardDTO(id);
+			
+			///////////////////////////////////////////////////////
+			// ì‹¤ì œ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì„ ì‹¤í–‰í•˜ê¸° ìœ„í•´ Serviceì˜ ë©”ì„œë“œë¥¼ í˜¸ì¶œ
+			int result = boardService.deleteBoard(deleteBoardDto);
+			
+			///////////////////////////////////////////////////////
+			// ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ì˜ ê²°ê³¼ì— ë”°ë¼ ê²°ê³¼ë¥¼ ì¶œë ¥
+			if (result == 1) System.out.println("Delete Success");
+			else System.out.println("Delete Failed");
+		}
+		else {
+			System.out.println("404 Not found");
+		}
+		
 	}
+
 }
-
-
-
-
 
 
 

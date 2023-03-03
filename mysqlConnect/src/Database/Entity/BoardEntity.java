@@ -1,16 +1,16 @@
-package Database.Entity;
+package database.Entity;
 
-//Entity : µ¥ÀÌÅÍº£ÀÌ½ºÀÇ Å×ÀÌºí°ú ¼­·Î ¸ÅÇÎµÇ´Â Java Class
-//¸ñÀû : µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºíÀÇ °¢°¢ÀÇ ·¹ÄÚµå¸¦ ÀÎ½ºÅÏ½º·Î ¹Ş±â À§ÇÑ ¿ëµµ
-//Á¶°Ç : µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºíÀÇ °¢ ÄÃ·³¸í, µ¥ÀÌÅÍÅ¸ÀÔ°ú Entity classÀÇ ÇÊµå¸í, µ¥ÀÌÅÍÅ¸ÀÔÀÌ ÀÏÄ¡ÇØ¾ßÇÔ
+// Entity: ë°ì´í„°ë² ì´ìŠ¤ì˜ í…Œì´ë¸”ê³¼ ì„œë¡œ ë§¤í•‘ë˜ëŠ” Java Class
+// ëª©ì : ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸”ì˜ ê°ê°ì˜ ë ˆì½”ë“œë¥¼ ì¸ìŠ¤í„´ìŠ¤ë¡œ ë°›ê¸° ìœ„í•œ ìš©ë„
+// ì¡°ê±´: ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸”ì˜ ê° ì»¬ëŸ¼ëª…, ë°ì´í„°íƒ€ì…ê³¼ Entity classì˜ í•„ë“œëª…, ë°ì´í„°íƒ€ì…ì´ ì¼ì¹˜í•´ì•¼í•¨
 
-//Board Table
-//id int auto_increment primary key,
-//boardTitle varchar(200) not null,
-//boardContent text not null,
-//boardDateTime datetime not null,
-//boardLike int default 0,
-//boardWriter int not null,
+// Board Table
+// id INT AUTO_INCREMENT PRIMARY KEY
+// boardTitle VARCHAR(200) NOT NULL
+// boardContent TEXT NOT NULL
+// boardDateTime DATETIME NOT NULL
+// boardLike INT DEFAULT 0
+// boardWriter INT NOT NULL
 
 public class BoardEntity {
 	
@@ -30,51 +30,40 @@ public class BoardEntity {
 		this.boardLike = boardLike;
 		this.boardWriter = boardWriter;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
-	
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
 	public String getBoardTitle() {
 		return boardTitle;
 	}
-	
 	public void setBoardTitle(String boardTitle) {
 		this.boardTitle = boardTitle;
 	}
-	
 	public String getBoardContent() {
 		return boardContent;
 	}
-	
 	public void setBoardContent(String boardContent) {
 		this.boardContent = boardContent;
 	}
-	
 	public String getBoardDateTime() {
 		return boardDateTime;
 	}
-	
 	public void setBoardDateTime(String boardDateTime) {
 		this.boardDateTime = boardDateTime;
 	}
-	
 	public Integer getBoardLike() {
 		return boardLike;
 	}
-	
 	public void setBoardLike(Integer boardLike) {
 		this.boardLike = boardLike;
 	}
-	
 	public Integer getBoardWriter() {
 		return boardWriter;
 	}
-	
 	public void setBoardWriter(Integer boardWriter) {
 		this.boardWriter = boardWriter;
 	}
@@ -85,7 +74,12 @@ public class BoardEntity {
 				+ ", boardDateTime=" + boardDateTime + ", boardLike=" + boardLike + ", boardWriter=" + boardWriter
 				+ "]";
 	}
-	
-	
-	
+
 }
+
+
+
+
+
+
+

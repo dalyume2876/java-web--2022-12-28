@@ -1,11 +1,10 @@
 package dto;
 
 public class DeleteBoardDTO {
-
+	
 	private Integer id;
 
 	public DeleteBoardDTO(Integer id) {
-		super();
 		this.id = id;
 	}
 
@@ -21,7 +20,5 @@ public class DeleteBoardDTO {
 	public String toString() {
 		return "DeleteBoardDTO [id=" + id + "]";
 	}
-	
-	
-	
+
 }

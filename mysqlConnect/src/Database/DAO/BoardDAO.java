@@ -1,4 +1,4 @@
-package Database.DAO;
+package database.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,24 +9,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Database.Entity.BoardEntity;
+import database.DatabaseConnector;
+import database.Entity.BoardEntity;
 import dto.DeleteBoardDTO;
-import dto.UpdateBoardBTO;
-import dto.insertBoardDTO;
-import index.DatabaseConnector;
+import dto.InsertBoardDTO;
+import dto.UpdateBoardDTO;
 
-//DAO : Data Access Object
-//µ¥ÀÌÅÍ¹èÀÌ½º¿¡ Á¢±ÙÇØ¼­ µ¥ÀÌÅÍ °Ë»ö ¹× »ğÀÔ µîÀÇ µ¥ÀÌÅÍº£ÀÌ½º ÀÛ¾÷À» ´ã´çÇÏ´Â Å¬·¡½º
+// DAO : Data Access Object
+// ë°ì´í„°ë² ì´ìŠ¤ì— ì ‘ê·¼í•´ì„œ ë°ì´í„° ê²€ìƒ‰ ë° ì‚½ì… ë“±ì˜ ë°ì´í„°ë² ì´ìŠ¤ ì‘ì—…ì„ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤
 public class BoardDAO {
-
-	//µ¥ÀÌÅÍº£ÀÌ½ºÀÇ Board Å×ÀÌºí¿¡¼­ ÀÔ·Â¹ŞÀº id¿¡ ÇØ´çÇÏ´Â ·¹ÄÚµå¸¦ ¸ğµç ÄÃ·³À» ¼±ÅÃÇØ¼­ ¹İÈ¯ÇÏ´Â¸Ş¼­µå
-	// SQL : SELECT * FROM Board WHERE id = ?;
-	//¿¹»ó ¹İÈ¯ °á°ú : 0°³ ¶Ç´Â 1°³ÀÇ ·¹ÄÚµå
+	
+	// ë°ì´í„°ë² ì´ìŠ¤ì˜ Board í…Œì´ë¸”ì—ì„œ ì…ë ¥ë°›ì€ idì— í•´ë‹¹í•˜ëŠ” ë ˆì½”ë“œë¥¼ ëª¨ë“  ì»¬ëŸ¼ì„ ì„ íƒí•´ì„œ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
+	// SQL: SELECT * FROM Board WHERE id = ?;
+	// ì˜ˆìƒ ë°˜í™˜ ê²°ê³¼: 0ê°œ or 1ê°œì˜ ë ˆì½”ë“œ
 	public BoardEntity findById(Integer id) {
 		
 		BoardEntity result = null;
 		
-		final String SQL = "SELECT * FROM Board WHERE id = ?;";
+		final String SQL = "SELECT * FROM Board WHERE id = ?";
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -36,51 +36,51 @@ public class BoardDAO {
 			
 			connection = DatabaseConnector.createConnection();
 			preparedStatement = connection.prepareStatement(SQL);
-			
+			// SELECT * FROM Board WHERE id = ?
 			preparedStatement.setInt(1, id);
 			
 			resultSet = preparedStatement.executeQuery();
 			
-			String boardTitle = resultSet.getString(2);
-			String boardContent = resultSet.getString(3);
-			String boardDateTime = resultSet.getString(4);
-			Integer boardLike = resultSet.getInt(5);
-			Integer boardWriter = resultSet.getInt(6);
+			if (resultSet.next()) {
+				String boardTitle = resultSet.getString(2);
+				String boardContent = resultSet.getString(3);
+				String boardDateTime = resultSet.getString(4);
+				Integer boardLike = resultSet.getInt(5);
+				Integer boardWriter = resultSet.getInt(6);
+				
+				result = new BoardEntity(id, boardTitle, boardContent, boardDateTime, boardLike, boardWriter);
+			}
 			
-			result = new BoardEntity
-					(id, boardTitle, boardContent, boardDateTime, boardLike, boardWriter);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
 			try {
-				if(resultSet != null && !resultSet.isClosed())
+				if (resultSet != null && !resultSet.isClosed())
 					resultSet.close();
-				if (preparedStatement != null && preparedStatement.isClosed()) {
+				if (preparedStatement != null && !preparedStatement.isClosed())
 					preparedStatement.close();
-				}
-				if (connection != null && connection.isClosed()) {
+				if (connection != null && !connection.isClosed())
 					connection.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 		
 		return result;
+		
 	}
 	
-	//µ¥ÀÌÅÍº£ÀÌ½ºÀÇ BoardÅ×ÀÌºí¿¡¼­ ¸ğµç ÄÃ·³¸¦ ¼±ÅÃÇØ¼­ ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
-	//SQL : select * from Board;
-	//¿¹»óµÇ´Â ¹İÈ¯ °á°ú°¡ 0°³ ÀÌ»óÀÇ º¹¼ö
+	// ë°ì´í„°ë² ì´ìŠ¤ì˜ Board í…Œì´ë¸”ì—ì„œ ëª¨ë“  ì»¬ëŸ¼ì„ ì„ íƒí•´ì„œ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
+	// SQL: SELECT * FROM Board;
+	// ì˜ˆìƒë˜ëŠ” ë°˜í™˜ ê²°ê³¼ëŠ” 0ê°œ ì´ìƒì˜ ë³µìˆ˜ì˜ ë ˆì½”ë“œ
 	public List<BoardEntity> find() {
 		List<BoardEntity> result = new ArrayList<BoardEntity>();
 		
-		final String SQL = "select * from Board";
+		final String SQL = "SELECT * FROM Board";
 		
 		Connection connection = null;
 		Statement statement = null;
-		ResultSet resultSet = null; 
+		ResultSet resultSet = null;
 		
 		try {
 			connection = DatabaseConnector.createConnection();
@@ -98,46 +98,45 @@ public class BoardDAO {
 				BoardEntity entity = new BoardEntity(id, boardTitle, boardContent, boardDateTime, boardLike, boardWriter);
 				result.add(entity);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		} finally {
 			try {
-				if(connection != null && !connection.isClosed())
-					connection.close();
-				if(statement != null && !statement.isClosed())
-					statement.close();
-				if(resultSet != null && !resultSet.isClosed())
+				if (resultSet != null && !resultSet.isClosed())
 					resultSet.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+				if (statement != null && !statement.isClosed())
+					statement.close();
+				if (connection != null && !connection.isClosed())
+					connection.close();
+			} catch(Exception exception) {
+				exception.printStackTrace();
 			}
-			
 		}
-		
-		
 		return result;
 	}
 	
-	//µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ Board Å×ÀÌºí¿¡ ·¹ÄÚµå¸¦ »ğÀÔ
-	//SQL : INSERT INTO Board(boardTitle, boardContent, boardDateTime, boardWriter) VALUES(?, ?, ?, ?);
-	//¿¹»óµÇ´Â ¹İÈ¯°ª : 0 or 1
-	public int insert(insertBoardDTO dto) {
+	// ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ Board í…Œì´ë¸”ì— ë ˆì½”ë“œë¥¼ ì‚½ì…
+	// SQL: INSERT INTO Board (boardTitle, boardContent, boardDateTime, boardWriter)
+	//      VALUES (?, ?, ?, ?);
+	// ì˜ˆìƒë˜ëŠ” ë°˜í™˜ ê°’: 0 or 1
+	public int insert(InsertBoardDTO dto) {
 		int result = 0;
 		
-		final String SQL = "INSERT INTO Board(boardTitle, boardContent, boardDateTime, boardWriter) VALUES(?, ?, ?, ?);";
+		final String SQL = "INSERT INTO Board (boardTitle, boardContent, boardDateTime, boardWriter) VALUES (?, ?, ?, ?)";
 		
 		Connection connection = null;
-		
-		//PreparedStatement : µ¿ÀûÀ¸·Î SQL¹®ÀÇ °ªÀ» ÁöÁ¤ÇÒ ¼ö ÀÖµµ·Ï ÇÔ
+		// PreparedStatement: ë™ì ìœ¼ë¡œ SQLë¬¸ì˜ ê°’ì„ ì§€ì •í•  ìˆ˜ ìˆë„ë¡ í•¨
 		PreparedStatement preparedStatement = null;
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat simpleDateFormat = 
+				new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		
 		try {
 			connection = DatabaseConnector.createConnection();
-			//PreparedStatement °´Ã¼ »ı¼º
+			// PreparedStatement ê°ì²´ ìƒì„±
 			preparedStatement = connection.prepareStatement(SQL);
 			
+			// INSERT INTO Board (boardTitle, boardContent, boardDateTime, boardWriter) VALUES (?, ?, ?, ?)
 			preparedStatement.setString(1, dto.getBoardTitle());
 			preparedStatement.setString(2, dto.getBoardContent());
 			preparedStatement.setString(3, simpleDateFormat.format(new Date()));
@@ -145,30 +144,32 @@ public class BoardDAO {
 			
 			result = preparedStatement.executeUpdate();
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		} finally {
 			try {
-				if(preparedStatement != null && !preparedStatement.isClosed()) 
+				if (preparedStatement != null && !preparedStatement.isClosed())
 					preparedStatement.close();
-				if(connection != null && !connection.isClosed())
+				if (connection != null && !connection.isClosed())
 					connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 		
 		return result;
 	}
 	
-	// µ¥ÀÌÅÍº£ÀÌ½º¿¡¼¼ boardÅ×ÀÌºíÀÇ ·¹ÄÚµå Áß ÀÔ·Â¹ŞÀº id¿¡ ÇØ´çÇÏ´Â ·¹ÄÚµåÀÇ
-	// title°ú content¸¦ ÀÔ·Â¹ŞÀº °ªÀ¸·Î ¼öÁ¤
-	// SQL : UPDATE Board SET boardTitle = ?, boardContent = ? where id = ?;
-	// ¿¹»óµÇ´Â ¹İÈ¯ °ª : 0 or 1
-	public int  update(UpdateBoardBTO dto) {
+	// ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ Boardí…Œì´ë¸”ì˜ ë ˆì½”ë“œ ì¤‘ ì…ë ¥ë°›ì€ idì— í•´ë‹¹í•˜ëŠ” ë ˆì½”ë“œì˜ 
+	// titleê³¼ contentë¥¼ ì…ë ¥ë°›ì€ ê°’ìœ¼ë¡œ ìˆ˜ì •
+	// SQL: UPDATE Board SET boardTitle = ?, boardContent = ?
+	//      WHERE id = ?;
+	// ì˜ˆìƒë˜ëŠ” ë°˜í™˜ ê°’: 0 or 1
+	public int update(UpdateBoardDTO dto) {
+		
 		int result = 0;
 		
-		final String SQL = "UPDATE Board SET boardTitle = ?, boardContent = ? where id = ?;";
+		final String SQL = "UPDATE Board SET boardTitle = ?, boardContent = ? WHERE id = ?";
 		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -177,24 +178,23 @@ public class BoardDAO {
 			
 			connection = DatabaseConnector.createConnection();
 			preparedStatement = connection.prepareStatement(SQL);
-			
+			// UPDATE Board SET boardTitle = ?, boardContent = ? WHERE id = ?
 			preparedStatement.setString(1, dto.getBoardTitle());
 			preparedStatement.setString(2, dto.getBoardContent());
 			preparedStatement.setInt(3, dto.getId());
 			
 			result = preparedStatement.executeUpdate();
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		} finally {
 			try {
-				if(preparedStatement != null && !preparedStatement.isClosed())
+				if (preparedStatement != null && !preparedStatement.isClosed())
 					preparedStatement.close();
-				if(connection != null && !connection.isClosed())
+				if (connection != null && !connection.isClosed())
 					connection.close();
-				
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 		
@@ -202,40 +202,49 @@ public class BoardDAO {
 		
 	}
 	
-	//µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ Board Å×ÀÌºí Áß ÀÔ·Â¹ŞÀº id¿¡ ÇØ´çÇÏ´Â ·¹ÄÚµå¸¦ »èÁ¦
-	//SQL : DELETE FROM Board WHERE id = ?;
-	//¿¹»ó ¹İÈ¯°ª 0 or 1
-	
+	// ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ Board í…Œì´ë¸” ì¤‘ ì…ë ¥ë°›ì€ idì— í•´ë‹¹í•˜ëŠ” ë ˆì½”ë“œë¥¼ ì‚­ì œ
+	// SQL: DELETE FROM Board WHERE id = ?;
+	// ì˜ˆìƒ ë°˜í™˜ ê°’: 0 or 1
 	public int delete(DeleteBoardDTO dto) {
+		
 		int result = 0;
 		
-		final String SQL = "DELETE FROM Board WHERE id = ?;";
-		PreparedStatement preparedStatement = null;
+		final String SQL = "DELETE FROM Board WHERE id = ?";
+		
 		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
+			
 			connection = DatabaseConnector.createConnection();
 			preparedStatement = connection.prepareStatement(SQL);
+			// DELETE FROM Board WHERE id = ?
 			preparedStatement.setInt(1, dto.getId());
 			
 			result = preparedStatement.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		} finally {
 			try {
-				if (preparedStatement != null && !preparedStatement.isClosed()) {
+				if (preparedStatement != null && !preparedStatement.isClosed())
 					preparedStatement.close();
-				}
-				if(connection != null && !connection.isClosed())
+				if (connection != null && !connection.isClosed())
 					connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		}
 		
 		return result;
+		
 	}
+
 }
+
+
+
+
 
 
 
