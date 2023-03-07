@@ -12,62 +12,61 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class PostHumanResourceRequestDto {
-    //? 직급
-    @NotBlank
-    @Length(min=0, max=5)
-    private String position;
+   //? 직급
+   @NotBlank
+   @Length(min=0, max=5)
+   private String position;
 
-    //? 이름
-    @NotBlank
-    @Length(min=0, max=10)
-    private String name;
+   //? 이름
+   @NotBlank
+   @Length(min=0, max=10)
+   private String name;
 
-    //? 나이
-    @Range(min=0, max=120)
-    private int age;
+   //? 나이
+   @Range(min=0, max=120)
+   private int age;
 
-    //? 성별
-    @NotBlank
-    @Length(min=0, max=5)
-    private String gender;
+   //? 성별
+   @NotBlank
+   @Length(min=0, max=5)
+   private String gender;
 
-    //? 학력
-    @NotBlank
-    @Length(min=0, max=10)
-    private String academicAbility;
+   //? 학력
+   @NotBlank
+   @Length(min=0, max=10)
+   private String academicAbility;
 
-    //? 생년월일
-    @NotBlank
-    private String birth;
+   //? 생년월일
+   @NotBlank
+   private String birth;
 
-    //? 휴대전화번호
-    @NotBlank
-    private String telNumber;
+   //? 휴대전화번호
+   @NotBlank
+   private String telNumber;
 
-    //? 주소
-    @NotBlank
-    private String address;
+   //? 주소
+   @NotBlank
+   private String address;
 
-    //? 상세 주소
-    @NotBlank
-    private String addressDetail;
+   //? 상세 주소
+   @NotBlank
+   private String addressDetail;
 
-    //? 입사일
-    @NotBlank
-    private String joinDate;
+   //? 입사일
+   @NotBlank
+   private String joinDate;
 
-    //? 퇴사일
-    private String resignationDate;
+   //? 퇴사일
+   private String resignationDate;
 
-    //? 부서 코드
-    @NotBlank
-    @Length(min=0, max=5)
-    private String department;
+   //? 부서 코드
+   @Length(min=0, max=5)
+   private String department;
 
-    //? 연봉
-    @Min(0)
-    private int annualIncome;
+   //? 연봉
+   @Min(0)
+   private int annualIncome;
 
-    //? 비고
-    private String note;
+   //? 비고
+   private String note;
 }

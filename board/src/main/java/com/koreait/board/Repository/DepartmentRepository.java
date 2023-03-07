@@ -1,4 +1,4 @@
-package com.koreait.board.repository;
+package com.koreait.board.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
