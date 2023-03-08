@@ -5,6 +5,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.koreait.board.entity.DepartmentEntity;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostDepartmentRequestDto {
     
+    public PostDepartmentRequestDto(DepartmentEntity departmentEntity) {
+    }
+
     @NotBlank
     @Length(min=0, max=5)
     private String departmentCode;
