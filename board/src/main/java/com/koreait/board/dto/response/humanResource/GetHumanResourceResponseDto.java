@@ -1,4 +1,4 @@
-package com.koreait.board.dto.request.humanResource;
+package com.koreait.board.dto.response.humanResource;
 
 import com.koreait.board.entity.EmployeeEntity;
 
