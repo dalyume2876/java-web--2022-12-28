@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.koreait.board.Repository.DepartmentRepository;
 import com.koreait.board.Repository.EmployeeRepository;
 import com.koreait.board.common.constant.ResponseMessage;
+import com.koreait.board.dto.request.department.DeleteDepartmentResponseDto;
 import com.koreait.board.dto.request.department.PostDepartmentRequestDto;
 import com.koreait.board.dto.response.ResponseDto;
 import com.koreait.board.dto.response.department.GetAllDepartmentListResponseDto;
@@ -68,4 +69,27 @@ public class DepartmentService {
 
     }
 
+    public ResponseDto<List<DeleteDepartmentResponseDto>> deleteDepartment(String departmentCode){
+        List<DeleteDepartmentResponseDto> data = null;
+
+        try {
+
+            boolean hasDepartment = departmentRepository.existsById(departmentCode);
+            if(!hasDepartment) return ResponseDto.setFail(ResponseMessage.NOT_EXIST_DEPARTMENT_CODE);
+
+            boolean hasRefernceEmployee = employeeRepository.existsByDepartment(departmentCode);
+            if(!hasRefernceEmployee) return ResponseDto.setFail(ResponseMessage.REFERRING_EXIST);
+
+            departmentRepository.deleteById(departmentCode);
+
+            List<DepartmentEntity> departmentEntities = departmentRepository.findAll();
+            data = DeleteDepartmentResponseDto.copyList(departmentEntities); 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFail(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS,data);
+    }
 }

@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer>{
+
     public boolean existsByTelNumber(String telNumber);
+    public boolean existsByDepartment(String Department);
     public EmployeeEntity findByEmployeeNumber(int employeeNumber);
     
+
     
 }
