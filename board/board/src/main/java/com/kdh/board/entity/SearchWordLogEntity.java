@@ -2,6 +2,7 @@ package com.kdh.board.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,9 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "SearchWordLog")
-@Table(name = "SearchWordLog")
+@Entity(name="SearchWordLog")
+@Table(name="SearchWordLog")
 public class SearchWordLogEntity {
+//     sequence int AI PK 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int sequence;
+    private String searchWord;
+// search_word text
 }

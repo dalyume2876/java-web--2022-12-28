@@ -1,6 +1,6 @@
 package com.kdh.board.provider;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
