@@ -18,17 +18,18 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
     @Id
     private String email;
+    private String password;
     private String nickname;
     private String telNumber;
     private String address;
-    private String password;
+    private String profile;
 
-    public UserEntity(SignUpDto dto){
+    public UserEntity(SignUpDto dto) {
         this.email = dto.getEmail();
-        this.nickname = dto.getNickname();
-        this.telNumber =dto.getTelNumber();
-        this.address = dto.getAddress();
         this.password = dto.getPassword();
+        this.nickname = dto.getNickname();
+        this.telNumber = dto.getTelNumber();
+        this.address = dto.getAddress();
     }
 
 }
