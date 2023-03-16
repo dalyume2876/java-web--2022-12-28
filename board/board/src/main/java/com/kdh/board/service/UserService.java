@@ -12,12 +12,10 @@ import com.kdh.board.dto.response.ResponseDto;
 import com.kdh.board.dto.response.board.PostBoardResponseDto;
 import com.kdh.board.dto.response.user.PatchProfileResponseDto;
 import com.kdh.board.entity.UserEntity;
-import com.kdh.board.repository.BoardRepository;
 import com.kdh.board.repository.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired private BoardRepository boardRepository;
     @Autowired private UserRepository userRepository;
 
     public ResponseDto<PostBoardResponseDto> postBoard(String email, PostBoardDto dto) {
