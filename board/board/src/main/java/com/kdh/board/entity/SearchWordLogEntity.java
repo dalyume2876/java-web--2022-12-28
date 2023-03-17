@@ -13,13 +13,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="SearchWordLog")
-@Table(name="SearchWordLog")
+@Entity(name="Searchwordlog")
+@Table(name="Searchwordlog")
 public class SearchWordLogEntity {
 //     sequence int AI PK 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int sequence;
     private String searchWord;
-// search_word text
+//  search_word text
+    public SearchWordLogEntity(String searchWord) {
+        this.searchWord = searchWord;
+    }
 }

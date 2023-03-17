@@ -1,6 +1,5 @@
 package com.kdh.board.dto.response.auth;
 
-import javax.persistence.Id;
 
 import com.kdh.board.entity.UserEntity;
 

@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name="Liky")
 @IdClass(LikyPK.class)
 public class LikyEntity {
+    
     @Id
     private String userEmail;
     @Id
@@ -25,5 +26,12 @@ public class LikyEntity {
     
     private String userProfileUrl;
     private String userNickname;
+
+    public LikyEntity(UserEntity userEntity, int boardNumber){
+        this.userEmail = userEntity.getEmail();
+        this.boardNumber = boardNumber;
+        this.userProfileUrl = userEntity.getProfile();
+        this.userNickname = userEntity.getNickname();
+    }
 }
 

@@ -31,7 +31,7 @@ public class TokenProvider {
 
     public String validate(String jwt){
 
-        Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJwt(jwt).getBody();
+        Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(jwt).getBody();
 
         return claims.getSubject();
     }

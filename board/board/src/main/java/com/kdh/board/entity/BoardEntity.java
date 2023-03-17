@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int BoardNumber;
+    private int boardNumber;
     private String boardTitle;
     private String boardContent;
     private String boardImgUrl;
@@ -56,5 +56,25 @@ public class BoardEntity {
         this.boardTitle = dto.getBoardTitle();
         this.boardContent = dto.getBoardContent();
         this.boardImgUrl = dto.getBoardImgUrl();
+    }
+
+    public void increaseViewCount(){
+        this.viewCount++;
+    }
+
+    public void increaseLikeCount(){
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount(){
+        this.likeCount--;
+    }
+
+    public void increaseCommentCount(){
+        this.commentCount++;
+    }
+
+    public void decreaseCommentCount(){
+        this.commentCount--;
     }
 }
