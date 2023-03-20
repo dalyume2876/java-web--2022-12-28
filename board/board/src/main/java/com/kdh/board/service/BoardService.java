@@ -16,6 +16,8 @@ import com.kdh.board.dto.response.board.GetBoardResponseDto;
 import com.kdh.board.dto.response.board.GetListResponseDto;
 import com.kdh.board.dto.response.board.GetMyListResponseDto;
 import com.kdh.board.dto.response.board.GetSearchListResponseDto;
+import com.kdh.board.dto.response.board.GetTop15RelatedSearchWordResponseDto;
+import com.kdh.board.dto.response.board.GetTop15SearchWordResponseDto;
 import com.kdh.board.dto.response.board.LikeResponseDto;
 import com.kdh.board.dto.response.board.PatchBoardResponseDto;
 import com.kdh.board.dto.response.board.PostBoardResponseDto;
@@ -26,6 +28,8 @@ import com.kdh.board.entity.LikyEntity;
 import com.kdh.board.entity.RelatedSearchWordEntity;
 import com.kdh.board.entity.SearchWordLogEntity;
 import com.kdh.board.entity.UserEntity;
+import com.kdh.board.entity.resulySet.RelatedSearchWordResultSet;
+import com.kdh.board.entity.resulySet.SearchWordResultSet;
 import com.kdh.board.repository.BoardRepository;
 import com.kdh.board.repository.CommentRepository;
 import com.kdh.board.repository.LikyRepository;
@@ -178,6 +182,39 @@ public class BoardService {
         return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
     }
+    
+    public ResponseDto<GetTop15SearchWordResponseDto> getTop15SearchWord(){
+        GetTop15SearchWordResponseDto data = null;
+
+        try {
+            List<SearchWordResultSet> searchWordList = searchWordLogRepository.findTop15();
+            data = GetTop15SearchWordResponseDto.copyList(searchWordList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
+    }
+    
+    public ResponseDto<GetTop15RelatedSearchWordResponseDto> getTop15RelatedSearchWord(String searchWord){
+        GetTop15RelatedSearchWordResponseDto data = null;
+
+        try {
+
+            List<RelatedSearchWordResultSet> relatedSearchWordList = relatedSearchWordRepository.findTop15(searchWord);
+
+            data = GetTop15RelatedSearchWordResponseDto.copyList(relatedSearchWordList);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+    }
+    
     public ResponseDto<PatchBoardResponseDto> patchBoard(String email, PatchBoardDto dto) {
 
         PatchBoardResponseDto data = null;

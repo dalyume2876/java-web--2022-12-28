@@ -16,8 +16,11 @@ import com.kdh.board.dto.response.auth.SignInResponseDto;
 import com.kdh.board.dto.response.auth.SignUpResponseDto;
 import com.kdh.board.service.AuthService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping(ApiPattern.AUTH)
+@Api(description = "인증 모듈")
 public class AuthController {
     @Autowired private AuthService authService;
 
