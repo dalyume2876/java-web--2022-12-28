@@ -34,6 +34,8 @@ import com.kdh.board.dto.response.board.PostBoardResponseDto;
 import com.kdh.board.dto.response.board.PostCommentResponseDto;
 import com.kdh.board.service.BoardService;
 
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @RequestMapping(ApiPattern.BOARD)
 public class BoardController {
@@ -83,7 +85,7 @@ public class BoardController {
     }
 
     @GetMapping(GET_BOARD)
-    public ResponseDto<GetBoardResponseDto> getBoard(@PathVariable("boardNumber") int boardNumber) {
+    public ResponseDto<GetBoardResponseDto> getBoard(@ApiParam(value = "게시물 번호") @PathVariable("boardNumber") int boardNumber) {
 
         ResponseDto<GetBoardResponseDto> response = boardService.getBoard(boardNumber);
         return response;
