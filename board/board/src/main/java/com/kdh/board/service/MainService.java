@@ -22,14 +22,14 @@ public class MainService {
     //     System.out.println("시작 고정 딜레이 작업 : " + System.currentTimeMillis() / 1000);
     // }
 
-    @Scheduled(cron = "2 * * * * ?")
-    public void scheduleCronJob(){
-        try {
-            crawlling();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // @Scheduled(cron = "2 * * * * ?")
+    // public void scheduleCronJob(){
+    //     try {
+    //         crawlling();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public void crawlling() throws Exception {
 
@@ -38,7 +38,7 @@ public class MainService {
         Elements elements = document.selectXpath("#NM_FAVORITE > div.group_nav > ul.list_nav.NM_FAVORITE_LIST > li > a");
         
         for (Element element: elements) {
-            System.out.println(element.attr("href"));
+            System.out.println(element.absUrl("href"));
         }
     }
 
