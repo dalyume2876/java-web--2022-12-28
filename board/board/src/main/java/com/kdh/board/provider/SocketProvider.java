@@ -31,7 +31,7 @@ public class SocketProvider extends TextWebSocketHandler{
 
         String room = webSocketSession.getHandshakeHeaders().getFirst("room");
         sessionList.add(new SocketGroup(room, webSocketSession));
-        
+         
     }
 
     @Override
