@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.kdh.board.dto.request.user.PatchProfileDto;
 import com.kdh.board.dto.response.ResponseDto;
 import com.kdh.board.dto.response.user.PatchProfileResponseDto;
-import com.kdh.board.service.UserService;
+import com.kdh.board.service.implementation.UserServiceImplements;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 
 public class UserController {
-    @Autowired private UserService userService;
+    @Autowired private UserServiceImplements userService;
 
     private final String PATCH_PROFILE = "/profile";
 

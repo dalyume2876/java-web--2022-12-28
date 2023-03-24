@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @ApiModel(value="좋아요 기능 Response Body - data")
 @Data
 @NoArgsConstructor

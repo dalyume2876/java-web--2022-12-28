@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kdh.board.common.constant.ApiPattern;
 import com.kdh.board.service.FileService;
+import com.kdh.board.service.implementation.FileServiceImplements;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

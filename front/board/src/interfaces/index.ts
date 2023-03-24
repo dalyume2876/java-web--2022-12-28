@@ -1,3 +1,6 @@
+import Board from './Board.interface';
+import Comment from './Comment.interface';
+
 //? 인터페이스 관리
 export interface IPreviewItem {
     img: string | null;
@@ -34,3 +37,5 @@ export interface ICommentItem {
     commentContent: string;
     commentDatetime: string;
 }
+
+export type {}

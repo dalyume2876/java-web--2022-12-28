@@ -28,6 +28,7 @@ import com.kdh.board.dto.response.board.GetMyListResponseDto;
 import com.kdh.board.dto.response.board.GetSearchListResponseDto;
 import com.kdh.board.dto.response.board.GetTop15RelatedSearchWordResponseDto;
 import com.kdh.board.dto.response.board.GetTop15SearchWordResponseDto;
+import com.kdh.board.dto.response.board.GetTop3ListResponseDto;
 import com.kdh.board.dto.response.board.LikeResponseDto;
 import com.kdh.board.dto.response.board.PatchBoardResponseDto;
 import com.kdh.board.dto.response.board.PostBoardResponseDto;
@@ -57,6 +58,7 @@ public class BoardController {
     private final String DELETE_BOARD = "/{boardNumber}";
     private final String GET_TOP15_SEARCH_WORD = "/top15-search-word";
     private final String GET_TOP15_RELATED_SEARCH_WORD = "/top15-related-search-word/{searchWord}";
+    private final String GET_TOP3_LIST = "/top3-list";
     
 
     @ApiOperation(value = "게시물 작성", notes = "제목, 내용, 이미지를 전송하면 게시물 작성 결과로 작성된 게시물 정보를 반환, 실패시 실패 메세지를 반환.")
@@ -127,6 +129,13 @@ public class BoardController {
         @PathVariable(name = "previousSearchWord", required = false) String previousSearchWord
     ){
         ResponseDto<List<GetSearchListResponseDto>> response = boardService.getSearchList(searchWord, previousSearchWord);
+        return response;
+    }
+
+    @ApiOperation(value = "좋아요 기준 상위 3개 게시물 리스트를 반환 실패시 메세지")
+    @GetMapping()
+    public ResponseDto<List<GetTop3ListResponseDto>> getTop3List(){
+        ResponseDto<List<GetTop3ListResponseDto>> response = boardService.getTop3List();
         return response;
     }
 
