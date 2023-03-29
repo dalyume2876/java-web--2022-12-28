@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(ApiPattern.AUTH)
 @Api(description = "인증 모듈")
 public class AuthController {
+    
     @Autowired private AuthService authService;
 
     private final String SIGN_UP = "/sign-up";

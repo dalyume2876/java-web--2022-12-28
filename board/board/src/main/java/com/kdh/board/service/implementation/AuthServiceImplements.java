@@ -17,7 +17,7 @@ import com.kdh.board.repository.UserRepository;
 import com.kdh.board.service.AuthService;
 
 @Service
-public class AuthServiceImplements implements AuthService{
+public class AuthServiceImplements implements AuthService {
     
     @Autowired private UserRepository userRepository;
     @Autowired private TokenProvider tokenProvider;
@@ -42,7 +42,7 @@ public class AuthServiceImplements implements AuthService{
             if(hasTelNumber) return ResponseDto.setFailed(ResponseMessage.EXIST_TEL_NUMBER);
 
             String encodedPassword = passwordEncoder.encode(password);
-            dto.setPassword(encodedPassword);
+            userEntity.setPassword(encodedPassword);
             userRepository.save(userEntity);
 
             data = new SignUpResponseDto(true);
