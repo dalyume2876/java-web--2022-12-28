@@ -15,7 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { useSignUpStore } from 'src/stores';
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { SignUpDto } from "src/apis/request/auth";
 import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
@@ -148,19 +148,26 @@ export default function SignUpCardView({ setLoginView }: Props) {
     
     console.log('anxios 이전!!');
 
-    axios.post(SIGN_UP_URL, data).then((response) => {
-      const { result, message } = response.data as ResponseDto<SignUpResponseDto>;
-      if(result) setLoginView(true)
-      else alert(message);
-    }).catch((error) => {
-      console.log(error.response.status);
-    });
+    axios.post(SIGN_UP_URL, data)
+    .then((response) => signUpResponseHandler(response))
+    .catch((error) => signUpErrorHandler(error));
 
     // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
 
     console.log('anxios 이후!!');
 
   }
+
+  const signUpResponseHandler = (response: AxiosResponse<any, any>) => {
+    const { result, message } = response.data as ResponseDto<SignUpResponseDto>;
+    if (result) setLoginView(true);
+    else alert(message);
+  }
+
+  const signUpErrorHandler = (error: any) => {
+    console.log(error.response.status);
+  }
+
 
   return (
     <Box

@@ -32,7 +32,7 @@ export default function MyPageContents() {
         //? 기준이 되는 새로운 리스트를 생성
         const tmp = BOARD_LIST.filter((board) => board.writerNickname === user?.nickname);
         //? 기준이 되는 새로운 리스트를 boardList 상태에 저장
-        setBoardList(tmp);
+        getSearchList();
     }, []);
 
   return (
@@ -44,7 +44,7 @@ export default function MyPageContents() {
             <Grid container spacing={3}>
                 <Grid item sm={12} md={8}>
                     <Stack spacing={2}>
-                        {viewList.map((boardItem) => (<BoardListItem item={boardItem as IPreviewItem} />))}
+                    {viewList.map((boardItem) => (<BoardListItem item={boardItem as IPreviewItem} />))}
                     </Stack>
                 </Grid>
                 <Grid item sm={12} md={4}>

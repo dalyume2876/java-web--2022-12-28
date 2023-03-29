@@ -1,6 +1,6 @@
 interface Board {
     boardContent:string;
-    boardImgUrl:string;
+    boardImgUrl:string | null;
     boardNumber:number;
     boardTitle:string;
     boardWriteDatetime:string;

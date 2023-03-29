@@ -1,6 +1,6 @@
-interface RequestDto {
+interface Dto {
     email: string;
     password: string;
 }
 
-export default RequestDto;
+export default Dto;

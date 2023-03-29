@@ -1,6 +1,6 @@
-interface ResponseDto{
+interface Dto{
     boardContent: string;
-    boardImgUrl: string;
+    boardImgUrl: string | null;
     boardNumber: number;
     boardTitle: string;
     boardWriteDatetime: string;
@@ -11,4 +11,4 @@ interface ResponseDto{
     writerProfileUrl: string;
 }
 
-export default ResponseDto;
+export default Dto;
