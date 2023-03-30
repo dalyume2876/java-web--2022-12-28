@@ -133,7 +133,7 @@ public class BoardController {
     }
 
     @ApiOperation(value = "좋아요 기준 상위 3개 게시물 리스트를 반환 실패시 메세지")
-    @GetMapping()
+    @GetMapping(GET_TOP3_LIST)
     public ResponseDto<List<GetTop3ListResponseDto>> getTop3List(){
         ResponseDto<List<GetTop3ListResponseDto>> response = boardService.getTop3List();
         return response;
