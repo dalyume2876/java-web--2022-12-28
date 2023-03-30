@@ -1,10 +1,10 @@
 interface Comment {
-    CommentNumber: number;
+    commentNumber: number;
     writerEmail: string;
     boardNumber: number;
     writeDatetime: string;
     commentContent: string;
-    writerProfileURL?: string | null;
+    writerProfileUrl?: string | null;
     writerNickname: string;
 }
 
