@@ -1,9 +1,5 @@
 interface Dto {
-    address: string;
-    email: string;
-    nickname: string;
-    profile: string | null;
-    telNumber: string;
+    profile: string;
 }
 
 export default Dto;
