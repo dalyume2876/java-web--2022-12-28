@@ -146,6 +146,7 @@ public class BoardController {
         return response;
     }
 
+    
     @ApiOperation(value = "검색어에 해당하는 연관 검색어 리스트 가져오기", notes = "Path Variable에 SearchWord를 포함하여 요청하면, 성공시 해당하는 검색어와 관련된 검색어 중 가장 많이 검색한 15개 검색어 리스트를 반환, 실패시 실패 메세지를 반환")
     @GetMapping(GET_TOP15_RELATED_SEARCH_WORD)
     public ResponseDto<GetTop15RelatedSearchWordResponseDto> getTop15RelatedSearchWord(
