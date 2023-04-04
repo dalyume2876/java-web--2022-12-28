@@ -12,6 +12,7 @@ interface Props {
 
 export default function PreviewCard({ previewItem }: Props) {
 
+    //      Hook      //
     const backgroundImage = `url(${previewItem.boardImgUrl})`;
 
     const navigator = useNavigate();

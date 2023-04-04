@@ -16,42 +16,44 @@ import { GET_SEARCH_LIST_URL, GET_TOP15_RELATED_SEARCH_WORD_URL } from 'src/cons
 
 export default function SearchView() {
 
+    //      Hook      //
     const { content } = useParams();
     const { viewList, pageNumber, boardList, setBoardList, onPageHandler, COUNT } = usePagingHook(5);
     const [popularList, setPopularList] = useState<string[]>([]);
 
+    //      Event Handler      //
     const getSearchList = () => {
         axios.get(GET_SEARCH_LIST_URL(content as string))
             .then((response) => getSearchListResponseHandler(response))
             .catch((error) => getSearchListErrorHandler(error));
     }
-
     const getTop15RelatedSearchWord = () => {
         axios.get(GET_TOP15_RELATED_SEARCH_WORD_URL(content as string))
         .then((response) => getTop15RelatedSearchWordResponseHandler(response))
         .catch((error) => getTop15RelatedSearchWordErrorHandler(error))
     }
 
+    //      Response Handler      //
     const getSearchListResponseHandler = (response: AxiosResponse<any, any>) => {
         const { result, message, data } = response.data as ResponseDto<GetSearchListResponseDto[]>;
         if (!result || data === null) return;
         setBoardList(data);
     }
-
-    const getSearchListErrorHandler = (error: any) => {
-        console.log(error.message);
-    }
-
     const getTop15RelatedSearchWordResponseHandler = (response: AxiosResponse<any, any>) => {
         const { result, message, data } = response.data as ResponseDto<GetTop15RelatedSearchWordResponseDto>
         if(!result || !data) return;
         setPopularList(data.top15SearchWordList);
     }
-
+    
+    //      Error Handler      //
     const getTop15RelatedSearchWordErrorHandler = (error:any) => {
         console.log(error.message);
     }
+    const getSearchListErrorHandler = (error: any) => {
+        console.log(error.message);
+    }
 
+    //      use effect      //
     useEffect(() => {
         //# array.filter(요소 => 조건)
         //? 특정한 조건에 부합하는 요소만 모아서 새로운 배열로 만들어 반환하는 메서드

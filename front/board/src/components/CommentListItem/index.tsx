@@ -7,6 +7,7 @@ interface Props {
 
 export default function CommentListItem({ item }: Props) {
 
+  //      Hook      //
   const dateGap = Date.now() - Date.parse(item.writeDatetime);
   const before = Math.floor(dateGap / (1000 * 60));
 

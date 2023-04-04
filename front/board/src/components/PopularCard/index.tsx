@@ -11,6 +11,7 @@ interface Props {
 
 export default function PopularCard({ title, popularList }: Props) {
   
+  //      Hook      //
   const navigator = useNavigate();
 
 

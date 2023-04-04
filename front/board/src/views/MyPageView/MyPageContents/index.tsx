@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
+import { useEffect, useState } from 'react'
 import { Box, Card, CardActionArea, Grid, Typography, Pagination, Stack } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 
 import { usePagingHook } from 'src/hooks';
-import { BOARD_LIST } from 'src/mock';
 import { useUserStore } from 'src/stores';
 import BoardListItem from 'src/components/BoardListItem';
 import { getPageCount } from 'src/utils';
-import { useNavigate } from 'react-router-dom';
-import { IPreviewItem } from 'src/interfaces';
-import { useCookies } from 'react-cookie';
 import axios, { AxiosResponse } from 'axios';
 import { GetMyListResponseDto, GetTop15SearchWordResponseDto } from 'src/apis/response/board';
 import ResponseDto from 'src/apis/response';
@@ -18,37 +16,35 @@ import { authorizationHeader, GET_MY_LIST_URL, GET_TOP15_SEARCH_WORD_URL } from 
 
 export default function MyPageContents() {
 
+    //      Hook      //
     const { boardList, viewList, pageNumber, setBoardList, onPageHandler, COUNT } = usePagingHook(5);
-    
 
-    //? 로그인 한 상태일 때 유저 정보를 가져올 수 있도록
-    //? 스토어에서 user 상태를 가져옴
     const navigator = useNavigate();
+
     const { user } = useUserStore();
+
     const [cookies] = useCookies();
 
+    //      Event Handler      //
     const getMyList = (accessToken: string) => {
         axios.get(GET_MY_LIST_URL, authorizationHeader(accessToken))
         .then((response) => getMyListResponseHandler(response))
         .catch((error) => getMyListErrorHandler(error));
     }
 
-   
-
-
-    
+    //      Response Handler      //
     const getMyListResponseHandler = (response: AxiosResponse<any, any>) => {
         const { result, message, data } = response.data as ResponseDto<GetMyListResponseDto[]>;
         if(!result || data === null) return;
         setBoardList(data);
     }
     
+    //      Error Handler      //
     const getMyListErrorHandler = (error: any) => {
         console.log(error.message);
     }
 
-    
-
+    //      use effect      //
     useEffect(() => {
         const accessToken = cookies.accessToken;
         //? 로그인이 되어있지 않으면 로그인 페이지로 이동

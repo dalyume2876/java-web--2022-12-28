@@ -6,11 +6,14 @@ import Typography from '@mui/material/Typography';
 import { Button, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import SearchIcon from '@mui/icons-material/Search';
 import { useUserStore } from 'src/stores';
 
-export default function NavigationBar() {
+import SearchIcon from '@mui/icons-material/Search';
 
+
+export default function NavigationBar() {
+  
+  //      Hook      //
   const [content, setContent] = useState<string>('');
   
   const { user } = useUserStore();
@@ -18,6 +21,7 @@ export default function NavigationBar() {
   const navigator = useNavigate();
   const path = useLocation();
 
+  //      Event Handler      //
   const onSearchHandler = () => {
     if (!content.trim()) {
       alert('검색어를 입력하세요.');

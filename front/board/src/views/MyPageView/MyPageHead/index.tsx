@@ -1,18 +1,20 @@
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import React, { ChangeEvent, useEffect, useRef } from 'react'
 
+import axios, { AxiosResponse } from 'axios';
 import { Avatar, Box, Typography, IconButton } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 import { useUserStore } from 'src/stores';
-import { useNavigate } from 'react-router-dom';
-import axios, { AxiosResponse } from 'axios';
-import { authorizationHeader, FILE_UPLOAD_URL, multipartheader, PATCH_PROFILE_URL } from 'src/constants/api';
 import { PatchProfileDto } from 'src/apis/request/user';
 import { PatchProfileResponseDto } from 'src/apis/response/user';
 import ResponseDto from 'src/apis/response';
-import { useCookies } from 'react-cookie';
+import { authorizationHeader, FILE_UPLOAD_URL, multipartheader, PATCH_PROFILE_URL } from 'src/constants/api';
 
 export default function MyPageHead() {
 
+    //      Hook      //
     const imageRef = useRef<HTMLInputElement | null>(null);
     
     const [cookies, setCookies] = useCookies();
@@ -21,11 +23,11 @@ export default function MyPageHead() {
 
     const accessToken = cookies.accessToken;
 
+    //      Event Handler      //
     const onProfileUploadButtonHandler = () => {
         if(!imageRef.current) return;
         imageRef.current.click();
     }
-
     const onProfileUploadChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         if(!event.target.files) return;
         const data = new FormData();
@@ -34,7 +36,14 @@ export default function MyPageHead() {
         .then((response) => imageUploadResponseHandler(response))
         .catch((error) => imageUploadErrorHandler(error));
     }
+    const onLogoutHandler = () => {
+        //TODO : 로그아웃 처리가 안될때가 있나봄
+        setCookies('accessToken', '', {expires: new Date()});
+        resetUser();
+        navigator('/'); 
+    }
 
+    //      Response Handler      //
     const imageUploadResponseHandler = (response: AxiosResponse<any,any>) => {
         const profile = response.data as string;
         const data: PatchProfileDto = { profile };
@@ -43,11 +52,6 @@ export default function MyPageHead() {
         .then((response) => patchProfileResponseHandler(response))
         .catch((error) => patchProfileErrorHandler(error))
     }
-    
-    const imageUploadErrorHandler = (error: any) => {
-        console.log(error.message)
-    }
-
     const patchProfileResponseHandler = (response: AxiosResponse<any,any>) => {
         const { result, message, data } = response.data as ResponseDto<PatchProfileResponseDto>
         if(!result || !data ){
@@ -57,17 +61,16 @@ export default function MyPageHead() {
 
         setUser(data);
     }
-
+    
+    //      Error Handler      //
+    const imageUploadErrorHandler = (error: any) => {
+        console.log(error.message)
+    }
     const patchProfileErrorHandler = (error: any) => {
         console.log(error.message)
     }
 
-    const onLogoutHandler = () => {
-        setCookies('accessToken', '', {expires: new Date()});
-        resetUser();
-        navigator('/'); 
-    }
-
+    //      use effect      //
     useEffect(() => {
         if(!accessToken){
             navigator('/auth')

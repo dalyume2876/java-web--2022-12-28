@@ -4,8 +4,6 @@ import { Box, Grid, Pagination, Typography, Stack } from '@mui/material'
 
 import BoardListItem from 'src/components/BoardListItem'
 import PopularCard from 'src/components/PopularCard'
-import { IPreviewItem } from 'src/interfaces';
-import { BOARD_LIST } from 'src/mock';
 import { getPageCount } from 'src/utils';
 import { usePagingHook } from 'src/hooks';
 import axios, { AxiosResponse } from 'axios';
@@ -14,44 +12,47 @@ import { GetListResponseDto, GetTop15SearchWordResponseDto } from 'src/apis/resp
 import { GET_LIST_URL, GET_TOP15_SEARCH_WORD_URL } from 'src/constants/api';
 
 export default function MainContents() {
-
+  //      Hook      //
   const { viewList, pageNumber, boardList, setBoardList, onPageHandler, COUNT } = usePagingHook(5);
   const [popularList, setPopularList] = useState<string[]>([]);
 
-  const getTop15SearchWord = () => {
-    axios.get(GET_TOP15_SEARCH_WORD_URL)
-    .then((response) => getTop15SearchWordResponseHandler(response))
-    .catch((error) => getTop15SearchWordErrorHandler(error));
-}
-
-  const getTop15SearchWordResponseHandler = (response: AxiosResponse<any, any>) => {
-      const {result, message, data} = response.data as ResponseDto<GetTop15SearchWordResponseDto>;
-      if(!result || !data) return;
-      setPopularList(data.top15SearchWordList);
-  }
-
-  const getTop15SearchWordErrorHandler = (error: any) => {
-      console.log(error.message);
-  }
-
+  //      Event Handler      //
   const getList = () => {
     axios.get(GET_LIST_URL)
-    .then((response) => getListResponseHandler(response))
-    .catch((error) => getListErrorHandler(error));
+      .then((response) => getListResponseHandler(response))
+      .catch((error) => getListErrorHandler(error));
   }
 
+  const getTop15SearchWord = () => {
+    axios.get(GET_TOP15_SEARCH_WORD_URL)
+      .then((response) => getTop15SearchWordResponseHandler(response))
+      .catch((error) => getTop15SearchWordErrorHandler(error));
+  }
+
+  //      Response Handler      //
   const getListResponseHandler = (response: AxiosResponse<any, any>) => {
-    const {result, message, data} = response.data as ResponseDto<GetListResponseDto[]>
-    if(!result || data === null) return;
+    const { result, message, data } = response.data as ResponseDto<GetListResponseDto[]>;
+    if (!result || data === null) return;
     setBoardList(data);
   }
+  const getTop15SearchWordResponseHandler = (response: AxiosResponse<any, any>) => {
+    const { result, message, data } = response.data as ResponseDto<GetTop15SearchWordResponseDto>
+    if (!result || !data) return;
+    setPopularList(data.top15SearchWordList);
+  }
 
-  const getListErrorHandler = (error:any) => {
+  //      Error Handler      //
+  const getListErrorHandler = (error: any) => {
+    console.log(error.message);
+  }
+  const getTop15SearchWordErrorHandler = (error: any) => {
     console.log(error.message);
   }
 
+  //      use effect      //
   useEffect(() => {
     getList();
+    getTop15SearchWord();
   }, [])
 
   return (
@@ -67,7 +68,7 @@ export default function MainContents() {
             </Stack>
           </Grid>
           <Grid item sm={12} md={4}>
-            <PopularCard title="인기 검색어" popularList={popularList}/>
+            <PopularCard title="인기 검색어" popularList={popularList} />
           </Grid>
         </Grid>
       </Box>

@@ -9,6 +9,7 @@ interface Props {
 
 export default function BoardListItem({ item }: Props) {
 
+  //      Hook      //
   const navigator = useNavigate();
 
   return (
