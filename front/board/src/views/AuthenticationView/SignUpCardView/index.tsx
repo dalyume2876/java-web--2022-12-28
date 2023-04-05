@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+
 import axios, { AxiosResponse } from "axios";
 import {
   Box,
@@ -21,15 +22,31 @@ import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
 import { SIGN_UP_URL } from "src/constants/api";
 
-//        Component       //
-function FirstPage() {
+//          Component          //
+interface FirstPageProps {
+    signUpError: boolean;
+}
 
-  //        Hook       //
+function FirstPage({signUpError}:FirstPageProps) {
+
+  //          Hook          //
   const { email, password, passwordCheck } = useSignUpStore();
   const { setEmail, setPassword, setPasswordCheck } = useSignUpStore();
 
+  const [emailMessage, setEmailMessage] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
+
+  const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/ 
+
+  //        Event Handler       //
+  const onEmailChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> ) => {
+    const value = event.target.value;
+    const isMatched =  emailValidator.test(value);
+    if (isMatched) setEmailMessage('');
+    else setEmailMessage('이메일 주소 포맷이 맞지 않습니다.')
+    setEmail(value);
+  }
 
   return (
     <Box>
@@ -39,9 +56,10 @@ function FirstPage() {
         label="이메일 주소*"
         variant="standard"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        helperText={emailMessage}
+        onChange={(event) => onEmailChangeHandler(event)}
       />
-      <FormControl fullWidth variant="standard" sx={{ mt: "40px" }}>
+      <FormControl sx={{ mt: "40px" }} error={signUpError} fullWidth variant="standard">
         <InputLabel>비밀번호*</InputLabel>
         <Input
           type={showPassword ? "text" : "password"}
@@ -56,7 +74,7 @@ function FirstPage() {
           onChange={(event) => setPassword(event.target.value)}
         />
       </FormControl>
-      <FormControl fullWidth variant="standard" sx={{ mt: "40px" }}>
+      <FormControl error={signUpError} fullWidth variant="standard" sx={{ mt: "40px" }}>
         <InputLabel>비밀번호 확인*</InputLabel>
         <Input
           type={showPasswordCheck ? "text" : "password"}
@@ -77,18 +95,22 @@ function FirstPage() {
   );
 }
 
-//        Component       //
-function SecondPage() {
+//          Component          //
+interface SecondPageProps {
+    signUpError: boolean
+}
 
-  //        Hook       //
+function SecondPage({ signUpError } : SecondPageProps) {
+
+  //          Hook          //
   const { nickname, telNumber, address, addressDetail } = useSignUpStore();
   const { setNickname, setTelNumber, setAddress, setAddressDetail } = useSignUpStore();
 
   return (
     <Box>
-      <TextField sx={{mt: '40px'}} fullWidth label="닉네임*" variant="standard" value={nickname} onChange={(event) => setNickname(event.target.value)} />
-      <TextField sx={{mt: '40px'}} fullWidth label="휴대폰 번호*" variant="standard" value={telNumber} onChange={(event) => setTelNumber(event.target.value)} />
-      <FormControl fullWidth variant="standard" sx={{mt: '40px'}}>
+      <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="닉네임*" variant="standard" value={nickname} onChange={(event) => setNickname(event.target.value)} />
+      <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="휴대폰 번호*" variant="standard" value={telNumber} onChange={(event) => setTelNumber(event.target.value)} />
+      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard" >
         <InputLabel>주소*</InputLabel>
         <Input type="text" endAdornment={
           <InputAdornment position="end">
@@ -101,7 +123,7 @@ function SecondPage() {
         onChange={(event) => setAddress(event.target.value)}
         />
       </FormControl>
-      <TextField sx={{mt: '40px'}} fullWidth label="상세 주소*" variant="standard" value={addressDetail} onChange={(event) => setAddressDetail(event.target.value)} />
+      <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="상세 주소*" variant="standard" value={addressDetail} onChange={(event) => setAddressDetail(event.target.value)} />
     </Box>
   );
 }
@@ -111,72 +133,71 @@ interface Props {
 }
 
 export default function SignUpCardView({ setLoginView }: Props) {
-
-  //        Hook       //
+  
+  //          Hook          //
   const { email, password, passwordCheck } = useSignUpStore();
   const { nickname, telNumber, address, addressDetail } = useSignUpStore();
-  
+
   const [page, setPage] = useState<number>(1);
+  const [signUpError, setSignUpError] = useState<boolean>(false);
 
-
-  //        Event Handler       //
+  //          Event Handler          //
   const onNextButtonHandler = () => {
     //? 해당 문자열 변수가 빈값인지 확인
     //? 1. 해당 변수 == '';
     //? 2. 해당 변수의 길이 == 0;
     if (!email || !password || !passwordCheck) {
-      alert('모든 값을 입력하세요.');
+      setSignUpError(true);
       return;
     }
     if (password !== passwordCheck) {
       alert('비밀번호가 서로 다릅니다.');
       return;
     }
+    setSignUpError(false);
     setPage(2);
   };
 
   const onSignUpHandler = () => {
     if (!email || !password || !passwordCheck) {
-      alert('모든 값을 입력하세요.');
+        setSignUpError(true);
       setPage(1);
       return;
     }
     if (!nickname || !telNumber || !address || !addressDetail) {
-      alert('모든 값을 입력하세요.');
+        setSignUpError(true);
       setPage(2);
       return;
     }
     if (password !== passwordCheck) {
-      alert('비밀번호가 서로 다릅니다.');
+      setSignUpError(true);
       setPage(1);
       return;
     }
 
-    const data: SignUpDto = { email, password, nickname, telNumber, address:`${address} ${addressDetail}` };
+    setSignUpError(false);
     
-    console.log('anxios 이전!!');
+    const data: SignUpDto = { email, password, nickname, telNumber, address: `${address} ${addressDetail}` };
 
     axios.post(SIGN_UP_URL, data)
-    .then((response) => signUpResponseHandler(response))
-    .catch((error) => signUpErrorHandler(error));
+      .then((response) => signUpResponseHandler(response))
+      .catch((error) => signUpErrorHandler(error));
 
     // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
 
-    console.log('anxios 이후!!');
-
   }
-//        Response handler       //
+
+  //          Response Handler          //
   const signUpResponseHandler = (response: AxiosResponse<any, any>) => {
     const { result, message } = response.data as ResponseDto<SignUpResponseDto>;
     if (result) setLoginView(true);
     else alert(message);
   }
 
-  //        Error Handler       //
+  //          Error Handler          //
   const signUpErrorHandler = (error: any) => {
     console.log(error.response.status);
   }
-
 
   return (
     <Box
@@ -196,7 +217,7 @@ export default function SignUpCardView({ setLoginView }: Props) {
             {page}/2
           </Typography>
         </Box>
-        {page === 1 ? <FirstPage /> : <SecondPage />}
+        {page === 1 ? <FirstPage signUpError={signUpError}/> : <SecondPage signUpError={signUpError}/>}
       </Box>
       <Box>
         {page === 1 && (
