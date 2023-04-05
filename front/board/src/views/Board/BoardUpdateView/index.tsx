@@ -109,7 +109,7 @@ export default function BoardUpdateView() {
       return;
     }
 
-    navigator(`/board/${boardNumber}`)
+    navigator(`/board/detail/${boardNumber}`)
   }
   
   const imageUploadResponseHandler = (response: AxiosResponse<any, any>) => {
@@ -137,14 +137,6 @@ export default function BoardUpdateView() {
     //? 정상적이지 않은 경로로 접근을 시도했을 때
     //? main 화면으로 돌려보냄
     if (!boardNumber) {
-      navigator('/');
-      return;
-    }
-    //? pathVariable로 전달받은 boardNumber에 해당하는 board 데이터를 검색해 옴
-    const board = BOARD_LIST.find((item) => item.boardNumber === parseInt(boardNumber));
-    //? 검색결과가 존재하지 않으면
-    //? main 화면으로 돌려보냄
-    if (!board) {
       navigator('/');
       return;
     }
