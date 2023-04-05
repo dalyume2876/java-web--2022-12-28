@@ -22,6 +22,7 @@ import { SignUpDto } from "src/apis/request/auth";
 import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
 import { SIGN_UP_URL } from "src/constants/api";
+import { CheckBox } from "@mui/icons-material";
 
 //          Component          //
 interface FirstPageProps {
@@ -157,6 +158,11 @@ function SecondPage({ signUpError } : SecondPageProps) {
         />
       </FormControl>
       <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="상세 주소*" variant="standard" value={addressDetail} onChange={(event) => setAddressDetail(event.target.value)} />
+      <Box sx={{display: 'flex', mt:'24px', alignItems:'center'}}>
+        <CheckBox/>
+        <Typography sx={{mr:'4px', color: 'red', fontWeight: 400}}>개인정보동의</Typography>
+        <Typography sx={{fontWeight: 700}}>더보기 &gt;</Typography>
+      </Box>
     </Box>
   );
 }
