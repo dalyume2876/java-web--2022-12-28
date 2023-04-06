@@ -9,6 +9,7 @@ public interface ResponseMessage {
     public static final String NOT_PERMISSION = "Do Not Have Permission";
 
     public static final String EXIST_EMAIL = "Existed Email.";
+    public static final String EXIST_NICKNAME = "Exited Nickname.";
     public static final String EXIST_TEL_NUMBER = "Existed Tel Number.";
 
     public static final String DATABASE_ERROR = "Database Error.";

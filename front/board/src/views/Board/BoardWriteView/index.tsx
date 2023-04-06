@@ -1,6 +1,6 @@
 import { useCookies } from 'react-cookie';
 import axios, { AxiosResponse } from 'axios';
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 import { Box, Divider, Fab, IconButton, Input } from '@mui/material';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
@@ -26,12 +26,30 @@ export default function BoardWriteView() {
   const accessToken = cookies.accessToken;
 
   //      Event Handler      //
+
+  const onBoardContentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    const value = event.target.value;
+    console.log(value);
+    setBoardContent(value);
+  }
+
+  const onBoardContentKeyPressHandler = (event: KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if(event.key != 'Enter') return;
+    setBoardContent(boardContent + '\n')
+  }
+
+  const onImageUploadButtonHandler = () => {
+    if(!imageRef.current) return;
+    imageRef.current.click();
+  }
+
   const postBoard = () => {
     const data: PostBoardDto = { boardTitle, boardContent, boardImgUrl };
     axios.post(POST_BOARD_URL, data, authorizationHeader(accessToken))
     .then((response) => postBoardResponseHandler(response))
     .catch((error) => postBoardErrorHandler(error))
   }
+
   const onWriteHandler = () => {
     //? 제목 및 내용 검증 (값이 존재하는지)
     if (!boardTitle.trim() || !boardContent.trim()) {
@@ -40,10 +58,7 @@ export default function BoardWriteView() {
     }
     postBoard();
   }
-  const onImageUploadButtonHandler = () => {
-    if(!imageRef.current) return;
-    imageRef.current.click();
-  }
+  
 
   const onImageUploadChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -95,7 +110,7 @@ export default function BoardWriteView() {
         <Box sx={{ display: 'flex', alignItems: 'start' }}>
           
         <Box sx={{ width: '100%' }}>
-            <Input fullWidth disableUnderline multiline minRows={5} placeholder='본문을 작성해주세요.' sx={{ fontSize: '18px', fontWeight: 500, lineHeight: '150%' }} onChange={(event) => setBoardContent(event.target.value)}/>
+            <Input fullWidth disableUnderline multiline minRows={5} placeholder='본문을 작성해주세요.' sx={{ fontSize: '18px', fontWeight: 500, lineHeight: '150%' }} onChange={(event) => onBoardContentChangeHandler(event)} onKeyDown={(event) => onBoardContentKeyPressHandler(event)}/>
             <Box sx={{ width: '100%' }} component='img' src={boardImgUrl} />
           </Box>
           
@@ -107,7 +122,7 @@ export default function BoardWriteView() {
 
         </Box>
       </Box>
-      <Fab sx={{ position: 'fixed', bottom: '200px', right: '248px', backgroundColor: 'rgba(0, 0, 0, 0.4)' }} onClick={onWriteHandler}>
+      <Fab sx={{ position: 'fixed', bottom: '200px', right: '248px', backgroundColor: '#999999' }} onClick={onWriteHandler}>
         <CreateIcon />
       </Fab>
     </Box>

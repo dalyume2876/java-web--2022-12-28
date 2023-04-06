@@ -38,7 +38,7 @@ export default function MyPageHead() {
     }
     const onLogoutHandler = () => {
         //TODO : 로그아웃 처리가 안될때가 있나봄
-        setCookies('accessToken', '', {expires: new Date()});
+        setCookies('accessToken', '', {expires: new Date(), path: '/'});
         resetUser();
         navigator('/'); 
     }

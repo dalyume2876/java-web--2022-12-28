@@ -9,6 +9,10 @@ import com.kdh.board.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, String>{
     
     public boolean existsByEmail(String email);
+    public boolean existsByNickname(String nickname);
     public boolean existsByTelNumber(String telNumber);
+
+    public boolean existByEmailOrNicknameOrTelNumber(String email, String nickname, String telNumber);
+
     public UserEntity findByEmail(String email);
 }
