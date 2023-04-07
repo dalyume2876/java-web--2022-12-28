@@ -1,4 +1,6 @@
 import PatchProfileDto from './Patch-Profile.request.dto';
-import GetUserResponseDto from './Get-User.response.dto';
+import ValidateEmailDto from './Validate-Email.request.dto';
+import ValidateTelNumberDto from './Validate-Tel_Number.request.dto'
+import ValidateNicknameDto from './Validate-Nickname.request.dto'
 
-export type {  GetUserResponseDto ,PatchProfileDto };
+export type { ValidateEmailDto, PatchProfileDto, ValidateTelNumberDto,ValidateNicknameDto };

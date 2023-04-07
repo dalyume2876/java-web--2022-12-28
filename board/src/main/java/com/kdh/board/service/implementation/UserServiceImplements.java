@@ -37,7 +37,7 @@ public class UserServiceImplements implements UserService{
 
         try {
             boolean hasEmail = userRepository.existsByEmail(email);
-            data = new ValidateEmailResponseDto(hasEmail);
+            data = new ValidateEmailResponseDto(!hasEmail);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class UserServiceImplements implements UserService{
 
         try {
             boolean hasNickname = userRepository.existsByNickname(nickname);
-            data = new ValidateNicknameResponseDto(hasNickname);
+            data = new ValidateNicknameResponseDto(!hasNickname);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class UserServiceImplements implements UserService{
 
         try {
             boolean hasTelNumber = userRepository.existsByEmail(telNumber);
-            data = new ValidateTelNumberResponseDto(hasTelNumber);
+            data = new ValidateTelNumberResponseDto(!hasTelNumber);
             
         } catch (Exception e) {
             e.printStackTrace();

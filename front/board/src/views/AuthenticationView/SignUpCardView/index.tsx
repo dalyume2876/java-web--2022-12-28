@@ -13,6 +13,7 @@ import {
   IconButton,
   FormHelperText,
 } from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -21,8 +22,10 @@ import { useSignUpStore } from 'src/stores';
 import { SignUpDto } from "src/apis/request/auth";
 import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
-import { SIGN_UP_URL } from "src/constants/api";
+import { SIGN_UP_URL, VALIDATE_EMAIL_URL, VALIDATE_NICKNAME_URL, VALIDATE_TEL_NUMBER_URL } from "src/constants/api";
 import { CheckBox } from "@mui/icons-material";
+import { ValidateEmailDto, ValidateNicknameDto, ValidateTelNumberDto } from "src/apis/request/user";
+import { ValidateEmailResponseDto, ValidateNicknameResponseDto, ValidateTelNumberResponseDto } from "src/apis/response/user";
 
 //          Component          //
 interface FirstPageProps {
@@ -35,12 +38,14 @@ function FirstPage({signUpError}:FirstPageProps) {
   const { email, password, passwordCheck } = useSignUpStore();
   const { setEmail, setPassword, setPasswordCheck } = useSignUpStore();
 
+  const [emailValidateMessage, setEmailValidateMessage] = useState<string>('');
   const [emailMessage, setEmailMessage] = useState<string>('');
   const [passwordMessage, setPasswordMessage] = useState<String>('');
   const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>('');
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
+
 
   const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/;
   const passwordValidator = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!?_]).{8,20}$/;
@@ -52,6 +57,14 @@ function FirstPage({signUpError}:FirstPageProps) {
     if (isMatched) setEmailMessage('');
     else setEmailMessage('이메일 주소 포맷이 맞지 않습니다.')
     setEmail(value);
+  }
+  const onEmailValidateButtonHandler = () => {
+      if(emailMessage) return;
+      const data: ValidateEmailDto = {email}
+
+      axios.post(VALIDATE_EMAIL_URL, data)
+      .then((response) => validateEmailResponseHandler(response))
+      .catch((error) => validateEmailErrorHandler(error))
   }
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.target.value;
@@ -68,17 +81,39 @@ function FirstPage({signUpError}:FirstPageProps) {
     setPasswordCheck(value);
   }
 
+  //    Response Handler    //
+  const validateEmailResponseHandler = (response: AxiosResponse<any, any>) => {
+    const { result, message, data } = response.data as ResponseDto<ValidateEmailResponseDto>;
+    if(!result || !data) {
+      alert(message);
+      return;
+    }
+    const validateMessage = data.result ? '' : '중복되는 이메일입니다.'
+    setEmailValidateMessage(validateMessage);
+  } 
+
+  //    Error Handler   //
+  const validateEmailErrorHandler = (error: any) => {
+    console.log(error.message);
+  }  
+
   return (
     <Box>
-      <TextField
-        sx={{ mt: "40px" }}
-        fullWidth
-        label="이메일 주소*"
-        variant="standard"
+      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard">
+        <InputLabel>이메일 주소*</InputLabel>
+        <Input type="text" endAdornment={
+          <InputAdornment position="end">
+            <IconButton onClick={() => onEmailValidateButtonHandler()}>
+              <CheckIcon />
+            </IconButton>
+          </InputAdornment>
+        } 
         value={email}
-        helperText={emailMessage}
         onChange={(event) => onEmailChangeHandler(event)}
-      />
+        />
+        <FormHelperText sx={{ color: 'red' }}>{emailMessage} {emailValidateMessage}</FormHelperText>
+      </FormControl>
+      
       <FormControl sx={{ mt: "40px" }} error={signUpError} fullWidth variant="standard">
         <InputLabel>비밀번호*</InputLabel>
         <Input
@@ -128,6 +163,8 @@ function SecondPage({ signUpError } : SecondPageProps) {
   const { nickname, telNumber, address, addressDetail } = useSignUpStore();
   const { setNickname, setTelNumber, setAddress, setAddressDetail } = useSignUpStore();
   const [telNumberMessage, setTelNumberMessage] = useState<string>('')
+  const [nicknameMessage, setNicknameMessage] = useState<string>('')
+  const [telNumberValidateMessage, setTelNumberValidateMessage] = useState<string>('');
   
   const telNumberValidator = /^[0-9]{0,13}$/
 
@@ -140,10 +177,86 @@ function SecondPage({ signUpError } : SecondPageProps) {
     setTelNumber(value);
   }
 
+  const onTelNumberValidateButtonHandler = () => {
+    if(telNumber.length < 13) return;
+    if(telNumberMessage) return;
+    const data: ValidateTelNumberDto = {telNumber}
+
+    axios.post(VALIDATE_TEL_NUMBER_URL, data)
+    .then((response) => validateTelNumberResponseHandler(response))
+    .catch((error) => validateTelNumberErrorHandler(error))
+  }
+
+  const onNicknameValidateButtonHandler = () => {
+    if(!nickname) return;
+    const data: ValidateNicknameDto = {nickname}
+
+    axios.post(VALIDATE_NICKNAME_URL, data)
+    .then((response) => validateNicknameResponseHandler(response))
+    .catch((error) => validateNicknameErrorHandler(error))
+  }
+
+  //    Response Handler   //
+  const validateTelNumberResponseHandler = (response: AxiosResponse<any, any>) => {
+    const { result, message, data } = response.data as ResponseDto<ValidateTelNumberResponseDto>
+    if(!result || !data) {
+      alert(message)
+      return;
+    }
+    const validateMessage = data.result ? '' : '중복되는 전화번호입니다.'
+    setTelNumberValidateMessage(validateMessage);
+  }
+
+  const validateNicknameResponseHandler = (response: AxiosResponse<any, any>) => {
+    const {result, message, data} = response.data as ResponseDto<ValidateNicknameResponseDto>
+    if(!result || !data) {
+      alert(message)
+      return
+    }
+    const validateMessage = data.result ? '' : '중복되는 닉네임입니다.'
+    setNicknameMessage(validateMessage);
+  }
+  //    Error Handler   //
+  const validateTelNumberErrorHandler = (error: any) => {
+    console.log(error.message);
+  }
+
+  const validateNicknameErrorHandler = (error: any) => {
+    console.log(error.message);
+  }
+
   return (
     <Box>
-      <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="닉네임*" variant="standard" value={nickname} onChange={(event) => setNickname(event.target.value)} />
-      <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="휴대폰 번호*" variant="standard" value={telNumber} onChange={(event) => onTelNumberHandler(event)} helperText={telNumberMessage} />
+      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard">
+        <InputLabel>닉네임*</InputLabel>
+        <Input type="text" endAdornment={
+          <InputAdornment position="end">
+            <IconButton onClick={() => onNicknameValidateButtonHandler()}>
+              <CheckIcon />
+            </IconButton>
+          </InputAdornment>
+        } 
+        value={nickname}
+        onChange={(event) => setNickname(event.target.value)}
+        />
+        <FormHelperText sx={{ color: 'red' }}>{nicknameMessage}</FormHelperText>
+      </FormControl>
+
+      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard">
+        <InputLabel>전화번호*</InputLabel>
+        <Input type="text" endAdornment={
+          <InputAdornment position="end">
+            <IconButton onClick={() => onTelNumberValidateButtonHandler()}>
+              <CheckIcon />
+            </IconButton>
+          </InputAdornment>
+        } 
+        value={telNumber}
+        onChange={(event) => setTelNumber(event.target.value)}
+        />
+        <FormHelperText sx={{ color: 'red' }}>{telNumberMessage} {telNumberValidateMessage}</FormHelperText>
+      </FormControl>
+      
       <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard" >
         <InputLabel>주소*</InputLabel>
         <Input type="text" endAdornment={

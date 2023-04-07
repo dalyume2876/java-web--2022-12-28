@@ -17,7 +17,7 @@ import { useUserStore } from './stores';
 import axios, { AxiosResponse } from 'axios';
 import ResponseDto from './apis/response';
 import { authorizationHeader, GET_USER_URL } from './constants/api';
-import { GetUserResponseDto } from './apis/request/user';
+import { GetUserResponseDto } from './apis/response/user';
 
 //# Router 설계 
 //? 1. 'main' path 작성 : '/'
