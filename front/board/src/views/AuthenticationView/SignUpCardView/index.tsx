@@ -12,90 +12,86 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
+  Checkbox,
 } from "@mui/material";
-import CheckIcon from '@mui/icons-material/Check';
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import CheckIcon from '@mui/icons-material/Check';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+
 
 import { useSignUpStore } from 'src/stores';
 import { SignUpDto } from "src/apis/request/auth";
 import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
 import { SIGN_UP_URL, VALIDATE_EMAIL_URL, VALIDATE_NICKNAME_URL, VALIDATE_TEL_NUMBER_URL } from "src/constants/api";
-import { CheckBox } from "@mui/icons-material";
 import { ValidateEmailDto, ValidateNicknameDto, ValidateTelNumberDto } from "src/apis/request/user";
 import { ValidateEmailResponseDto, ValidateNicknameResponseDto, ValidateTelNumberResponseDto } from "src/apis/response/user";
 
 //          Component          //
-interface FirstPageProps {
-    signUpError: boolean;
-}
 
-function FirstPage({signUpError}:FirstPageProps) {
+function FirstPage() {
 
   //          Hook          //
   const { email, password, passwordCheck } = useSignUpStore();
   const { setEmail, setPassword, setPasswordCheck } = useSignUpStore();
-
-  const [emailValidateMessage, setEmailValidateMessage] = useState<string>('');
-  const [emailMessage, setEmailMessage] = useState<string>('');
-  const [passwordMessage, setPasswordMessage] = useState<String>('');
-  const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>('');
-
+  const { emailPatternCheck, emailValidate, passwordPatternCheck, passwordValidate } = useSignUpStore();
+  const { setEmailPatternCheck, setEmailValidate, setPasswordPatternCheck, setPasswordValidate } = useSignUpStore();
+  const {signUpError} = useSignUpStore();
+  
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
 
-
   const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/;
-  const passwordValidator = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!?_]).{8,20}$/;
+  const passwordValidator = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!?_]).{8,20}$/;
 
-  //        Event Handler       //
-  const onEmailChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement> ) => {
+  //          Event Handler          //
+  const onEmailChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.target.value;
-    const isMatched =  emailValidator.test(value);
-    if (isMatched) setEmailMessage('');
-    else setEmailMessage('이메일 주소 포맷이 맞지 않습니다.')
+    const isMatched = emailValidator.test(value);
+    setEmailPatternCheck(isMatched)
     setEmail(value);
   }
-  const onEmailValidateButtonHandler = () => {
-      if(emailMessage) return;
-      const data: ValidateEmailDto = {email}
 
-      axios.post(VALIDATE_EMAIL_URL, data)
-      .then((response) => validateEmailResponseHandler(response))
-      .catch((error) => validateEmailErrorHandler(error))
+  const onEmailValidateButtonHanlder = () => {
+    if (!emailPatternCheck) return;
+    const data: ValidateEmailDto = { email }; 
+
+    axios.post(VALIDATE_EMAIL_URL, data)
+      .then((response) => validateEmailResponseHanlder(response))
+      .catch((error) => validateEmailErrorHanlder(error));
   }
+
   const onPasswordChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.target.value;
     const isMatched = passwordValidator.test(value);
-    if(isMatched) setPasswordMessage('');
-    else setPasswordMessage('영문자 + 숫자 + 특수문자(!?_)를 포함한 8-20자로 입력하여 주십시오.')
+    setPasswordPatternCheck(isMatched);
+    // if (isMatched) setPasswordMessage('');
+    // else setPasswordMessage('영대문자 + 영소문자 + 숫자 + 특수문자(!?_)를 포함한 8-20자를 입력해주세요.');
     setPassword(value);
   }
+
   const onPasswordCheckChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.target.value;
     const isMatched = password === value;
-    if(isMatched) setPasswordCheckMessage('')
-    else setPasswordCheckMessage('비밀번호가 서로 일치하지 않습니다.')
+    setPasswordValidate(isMatched);
     setPasswordCheck(value);
   }
-
-  //    Response Handler    //
-  const validateEmailResponseHandler = (response: AxiosResponse<any, any>) => {
+  
+  //          Response Handler          //
+  const validateEmailResponseHanlder = (response: AxiosResponse<any, any>) => {
     const { result, message, data } = response.data as ResponseDto<ValidateEmailResponseDto>;
-    if(!result || !data) {
+    if (!result || !data) {
       alert(message);
       return;
     }
-    const validateMessage = data.result ? '' : '중복되는 이메일입니다.'
-    setEmailValidateMessage(validateMessage);
-  } 
+    setEmailValidate(data.result);
+  }
 
-  //    Error Handler   //
-  const validateEmailErrorHandler = (error: any) => {
+  //          Error Handler          //
+  const validateEmailErrorHanlder = (error: any) => {
     console.log(error.message);
-  }  
+  }
 
   return (
     <Box>
@@ -103,7 +99,7 @@ function FirstPage({signUpError}:FirstPageProps) {
         <InputLabel>이메일 주소*</InputLabel>
         <Input type="text" endAdornment={
           <InputAdornment position="end">
-            <IconButton onClick={() => onEmailValidateButtonHandler()}>
+            <IconButton onClick={() => onEmailValidateButtonHanlder()}>
               <CheckIcon />
             </IconButton>
           </InputAdornment>
@@ -111,9 +107,18 @@ function FirstPage({signUpError}:FirstPageProps) {
         value={email}
         onChange={(event) => onEmailChangeHandler(event)}
         />
-        <FormHelperText sx={{ color: 'red' }}>{emailMessage} {emailValidateMessage}</FormHelperText>
+        { 
+          emailPatternCheck === null ? (<></>) :
+          !emailPatternCheck ? (<FormHelperText sx={{ color: 'red' }}>이메일 형식이 맞지 않습니다</FormHelperText>) : 
+          emailValidate === null ? (<FormHelperText sx={{ color: 'orange' }}>이메일 중복체크를 해주세요.</FormHelperText>) : 
+          !emailValidate ? (<FormHelperText sx={{ color: 'red' }}>사용할 수 없는 이메일입니다.</FormHelperText>) : 
+                           (<FormHelperText sx={{ color: 'green' }}>사용 가능한 이메일입니다.</FormHelperText>)
+        }
+        
+
+
+        
       </FormControl>
-      
       <FormControl sx={{ mt: "40px" }} error={signUpError} fullWidth variant="standard">
         <InputLabel>비밀번호*</InputLabel>
         <Input
@@ -128,9 +133,14 @@ function FirstPage({signUpError}:FirstPageProps) {
           value={password}
           onChange={(event) => onPasswordChangeHandler(event)}
         />
-        <FormHelperText>{passwordMessage}</FormHelperText>
+        { 
+        passwordPatternCheck === false ? 
+        (<FormHelperText sx={{color: 'red'}}>{'영대문자 + 영소문자 + 숫자 + 특수문자(!?_)를 포함한 8-20자를 입력해주세요.'}</FormHelperText>) : 
+        (<></>)
+        }
+
       </FormControl>
-      <FormControl error={signUpError} fullWidth variant="standard" sx={{ mt: "40px" }}>
+      <FormControl sx={{ mt: "40px" }} error={signUpError} fullWidth variant="standard">
         <InputLabel>비밀번호 확인*</InputLabel>
         <Input
           type={showPasswordCheck ? "text" : "password"}
@@ -146,77 +156,76 @@ function FirstPage({signUpError}:FirstPageProps) {
           value={passwordCheck}
           onChange={(event) => onPasswordCheckChangeHandler(event)}
         />
-        <FormHelperText>{passwordCheckMessage}</FormHelperText>
+        { 
+          passwordValidate === false ?
+         (<FormHelperText sx={{color: 'red'}}>{'비밀번호가 일치하지 않습니다.'}</FormHelperText>) : 
+         (<></>)
+        }
       </FormControl>
     </Box>
   );
 }
 
 //          Component          //
-interface SecondPageProps {
-    signUpError: boolean
-}
 
-function SecondPage({ signUpError } : SecondPageProps) {
+function SecondPage() {
 
   //          Hook          //
   const { nickname, telNumber, address, addressDetail } = useSignUpStore();
   const { setNickname, setTelNumber, setAddress, setAddressDetail } = useSignUpStore();
-  const [telNumberMessage, setTelNumberMessage] = useState<string>('')
-  const [nicknameMessage, setNicknameMessage] = useState<string>('')
-  const [telNumberValidateMessage, setTelNumberValidateMessage] = useState<string>('');
-  
-  const telNumberValidator = /^[0-9]{0,13}$/
 
-  //    Event Handler   //
+  const {nicknameValidate, telNumberPatternCheck, telNumberValidate} = useSignUpStore();
+  const { setNicknameValidate, setTelNumberPatternCheck, setTelNumberValidate } = useSignUpStore();
+  const {signUpError} = useSignUpStore();
+
+  const telNumberVaildator = /^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$/;
+
+  //          Event Handler          //
   const onTelNumberHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const value = event.target.value;
-    const isMatched = telNumberValidator.test(value);
-    if(isMatched) setTelNumberMessage('')
-    else setTelNumberMessage('숫자만 입력하세요.')
+    const isMatched = telNumberVaildator.test(value);
+    setTelNumberPatternCheck(isMatched)
     setTelNumber(value);
   }
 
   const onTelNumberValidateButtonHandler = () => {
-    if(telNumber.length < 13) return;
-    if(telNumberMessage) return;
-    const data: ValidateTelNumberDto = {telNumber}
-
+    if (!telNumberPatternCheck) return;
+    const data: ValidateTelNumberDto = { telNumber };
+    
     axios.post(VALIDATE_TEL_NUMBER_URL, data)
-    .then((response) => validateTelNumberResponseHandler(response))
-    .catch((error) => validateTelNumberErrorHandler(error))
+      .then((response) => validateTelNumberResponseHandler(response))
+      .catch((error) => validateTelNumberErrorHandler(error));
   }
 
   const onNicknameValidateButtonHandler = () => {
-    if(!nickname) return;
-    const data: ValidateNicknameDto = {nickname}
-
+    if (!nickname) return;
+    const data: ValidateNicknameDto = { nickname };
+    
     axios.post(VALIDATE_NICKNAME_URL, data)
-    .then((response) => validateNicknameResponseHandler(response))
-    .catch((error) => validateNicknameErrorHandler(error))
+      .then((response) => validateNicknameResponseHandler(response))
+      .catch((error) => validateNicknameErrorHandler(error));
   }
 
-  //    Response Handler   //
+  //          Response Handler          //
   const validateTelNumberResponseHandler = (response: AxiosResponse<any, any>) => {
-    const { result, message, data } = response.data as ResponseDto<ValidateTelNumberResponseDto>
-    if(!result || !data) {
-      alert(message)
+    const { result, message, data } = response.data as ResponseDto<ValidateTelNumberResponseDto>;
+    if (!result || !data) {
+      alert(message);
       return;
     }
-    const validateMessage = data.result ? '' : '중복되는 전화번호입니다.'
-    setTelNumberValidateMessage(validateMessage);
+    setTelNumberValidate(data.result);
   }
 
   const validateNicknameResponseHandler = (response: AxiosResponse<any, any>) => {
-    const {result, message, data} = response.data as ResponseDto<ValidateNicknameResponseDto>
-    if(!result || !data) {
-      alert(message)
-      return
+    const { result, message, data } = response.data as ResponseDto<ValidateNicknameResponseDto>;
+    if (!result || !data) {
+      alert(message);
+      return;
     }
-    const validateMessage = data.result ? '' : '중복되는 닉네임입니다.'
-    setNicknameMessage(validateMessage);
+    setNicknameValidate(data.result);
   }
-  //    Error Handler   //
+
+  //          Error Handler          //
   const validateTelNumberErrorHandler = (error: any) => {
     console.log(error.message);
   }
@@ -239,11 +248,15 @@ function SecondPage({ signUpError } : SecondPageProps) {
         value={nickname}
         onChange={(event) => setNickname(event.target.value)}
         />
-        <FormHelperText sx={{ color: 'red' }}>{nicknameMessage}</FormHelperText>
+        {
+          nicknameValidate === null ? (<></>) :
+          nicknameValidate ? (<FormHelperText sx={{ color: 'green' }}>사용 가능한 닉네임입니다.</FormHelperText>) :
+          (<FormHelperText sx={{ color: 'red' }}>사용중인 닉네임입니다.</FormHelperText>)
+        }
+        
       </FormControl>
-
       <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard">
-        <InputLabel>전화번호*</InputLabel>
+        <InputLabel>휴대폰 번호*</InputLabel>
         <Input type="text" endAdornment={
           <InputAdornment position="end">
             <IconButton onClick={() => onTelNumberValidateButtonHandler()}>
@@ -252,12 +265,18 @@ function SecondPage({ signUpError } : SecondPageProps) {
           </InputAdornment>
         } 
         value={telNumber}
-        onChange={(event) => setTelNumber(event.target.value)}
+        onChange={(event) => onTelNumberHandler(event)}
         />
-        <FormHelperText sx={{ color: 'red' }}>{telNumberMessage} {telNumberValidateMessage}</FormHelperText>
+        {
+          telNumberPatternCheck === null ? (<></>) :
+          !telNumberPatternCheck ? (<FormHelperText sx={{ color: 'red' }}>전화번호 패턴이 일치하지 않습니다.</FormHelperText>) :
+          telNumberValidate === null ? (<FormHelperText sx={{ color: 'orange' }}>전화번호 중복 체크를 해주세요.</FormHelperText>) :
+          telNumberValidate ? (<FormHelperText sx={{ color: 'green' }}>사용 가능한 전화번호입니다.</FormHelperText>) :
+          (<FormHelperText sx={{ color: 'red' }}>사용중인 전화번호입니다.</FormHelperText>)
+        }
+        
       </FormControl>
-      
-      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard" >
+      <FormControl sx={{mt: '40px'}} error={signUpError} fullWidth variant="standard">
         <InputLabel>주소*</InputLabel>
         <Input type="text" endAdornment={
           <InputAdornment position="end">
@@ -271,10 +290,10 @@ function SecondPage({ signUpError } : SecondPageProps) {
         />
       </FormControl>
       <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="상세 주소*" variant="standard" value={addressDetail} onChange={(event) => setAddressDetail(event.target.value)} />
-      <Box sx={{display: 'flex', mt:'24px', alignItems:'center'}}>
-        <CheckBox/>
-        <Typography sx={{mr:'4px', color: 'red', fontWeight: 400}}>개인정보동의</Typography>
-        <Typography sx={{fontWeight: 700}}>더보기 &gt;</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: '24px' }}>
+        <Checkbox color="default" />
+        <Typography sx={{mr: '4px', color: 'red', fontWeight: 400}}>개인정보동의</Typography>
+        <Typography sx={{fontWeight: 700}}>더보기&gt;</Typography>
       </Box>
     </Box>
   );
@@ -289,12 +308,14 @@ export default function SignUpCardView({ setLoginView }: Props) {
   //          Hook          //
   const { email, password, passwordCheck } = useSignUpStore();
   const { nickname, telNumber, address, addressDetail } = useSignUpStore();
+  const {setSignUpError} = useSignUpStore();
+  const {emailPatternCheck, passwordPatternCheck, telNumberPatternCheck} = useSignUpStore();
+  const {emailValidate, passwordValidate, telNumberValidate, nicknameValidate} = useSignUpStore();
 
   const [page, setPage] = useState<number>(1);
-  const [signUpError, setSignUpError] = useState<boolean>(false);
-
-  const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/;
-  const passwordValidator = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!?_]).{8,20}$/;
+  
+  // const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/;
+  // const passwordValidator = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!?_]).{8,20}$/;
 
   //          Event Handler          //
   const onNextButtonHandler = () => {
@@ -305,41 +326,51 @@ export default function SignUpCardView({ setLoginView }: Props) {
       setSignUpError(true);
       return;
     }
-    if(!emailValidator.test(email)) return;
-    if(!passwordValidator.test(password)) return;
-    if (password !== passwordCheck) return;
-  
+    if (!emailPatternCheck || !passwordPatternCheck) return;
+    if (!passwordValidate) return;
+
     setSignUpError(false);
     setPage(2);
   };
 
   const onSignUpHandler = () => {
     if (!email || !password || !passwordCheck) {
-        setSignUpError(true);
+      setSignUpError(true);
       setPage(1);
       return;
     }
     if (!nickname || !telNumber || !address || !addressDetail) {
-        setSignUpError(true);
+      setSignUpError(true);
       setPage(2);
       return;
     }
-    if (password !== passwordCheck) {
-      setSignUpError(true);
+    if (!emailPatternCheck || !passwordPatternCheck) {
       setPage(1);
+      return;
+    }
+    if (!emailValidate || !passwordValidate) {
+      setPage(1);
+      return;
+    }
+    if(!telNumberPatternCheck){
+      setPage(2);
+      return;
+    }
+    if(!nicknameValidate || !telNumberValidate) {
+      setPage(2);
       return;
     }
 
     setSignUpError(false);
     
     const data: SignUpDto = { email, password, nickname, telNumber, address: `${address} ${addressDetail}` };
-
+    
     axios.post(SIGN_UP_URL, data)
       .then((response) => signUpResponseHandler(response))
       .catch((error) => signUpErrorHandler(error));
 
     // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
-
+    
   }
 
   //          Response Handler          //
@@ -372,7 +403,7 @@ export default function SignUpCardView({ setLoginView }: Props) {
             {page}/2
           </Typography>
         </Box>
-        {page === 1 ? <FirstPage signUpError={signUpError}/> : <SecondPage signUpError={signUpError}/>}
+        {page === 1 ? <FirstPage/> : <SecondPage/>}
       </Box>
       <Box>
         {page === 1 && (

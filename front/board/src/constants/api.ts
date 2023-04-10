@@ -24,7 +24,7 @@ export const LIKE_URL = `${HOST}api/board/like`;
 export const VALIDATE_EMAIL_URL = `${HOST}api/user/validate/email`;
 export const VALIDATE_TEL_NUMBER_URL = `${HOST}api/user/validate/telNumber`
 export const VALIDATE_NICKNAME_URL = `${HOST}api/user/validate/nickname`;
-
+    
 export const PATCH_BOARD_URL = `${HOST}api/board/`
 
 export const GET_BOARD_URL = (boardNumber: string) => `${HOST}api/board/${boardNumber}`
